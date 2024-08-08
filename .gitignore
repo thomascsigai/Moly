@@ -1,11 +1,15 @@
 # Binaries
-**/bin/
-obj/
+/out
+bin/
+build/
 
 # Visual Studio files and folder
-.vs/
+/.vs
 **.sln
 **.vcxproj
 **.vcxproj.filters
 **.vcxproj.user
 **.csproj
+
+# CMakeSettings
+CMakeSettings.json

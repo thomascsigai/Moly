@@ -2,8 +2,8 @@
 
 // Used by applications to call Moly components
 
-#include "Moly/Application.h"
+#include <Application.h>
 
 
 // Entry point --------------
-#include "Moly/EntryPoint.h"
+#include <EntryPoint.h>
