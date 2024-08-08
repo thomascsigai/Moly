@@ -4,6 +4,7 @@ project(Moly)
 # Ajouter la bibliothèque dynamique Moly
 add_library(Moly SHARED
     "src/Application.cpp"
+    "src/Log.cpp"
 )
 
 # Ajouter les chemins d'inclusion pour Moly
