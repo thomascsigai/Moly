@@ -1,3 +1,6 @@
 [submodule "Moly/vendor/spdlog"]
 	path = Moly/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Moly/vendor/glfw"]
+	path = Moly/vendor/glfw
+	url = https://github.com/glfw/glfw
