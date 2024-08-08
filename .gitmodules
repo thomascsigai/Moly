@@ -1,0 +1,3 @@
+[submodule "Moly/vendor/spdlog"]
+	path = Moly/vendor/spdlog
+	url = https://github.com/gabime/spdlog
