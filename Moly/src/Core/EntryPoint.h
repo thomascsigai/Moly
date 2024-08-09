@@ -10,6 +10,7 @@ int main(int argc, char** argv)
 	ML_CORE_INFO("Log initialized");
 
 	auto app = Moly::CreateApplication();
+	ML_CORE_INFO("Application Running");
 	app->Run();
 	delete app;
 }

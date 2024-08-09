@@ -16,5 +16,7 @@ public:
 
 Moly::Application* Moly::CreateApplication()
 {
-	return new Sandbox();
+	Sandbox* sandbox = new Sandbox();
+	ML_CLIENT_TRACE("Initializing Sandbox App");
+	return sandbox;
 }
