@@ -21,8 +21,9 @@ namespace Moly
 		}
 	}
 
-	void Application::SetWindowData(WindowProps _windowData)
+	void Application::SetWindowData(std::string Title, uint32_t width, uint32_t height, bool VSync)
 	{
+		WindowProps _windowData = { Title, width, height, VSync };
 		windowData = _windowData;
 	}
 }

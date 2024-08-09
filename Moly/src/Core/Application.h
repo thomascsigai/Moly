@@ -15,7 +15,7 @@ namespace Moly
 		virtual ~Application();
 
 		void Run();
-		void SetWindowData(WindowProps _windowData);
+		void SetWindowData(std::string Title, uint32_t width, uint32_t height, bool VSync);
 	private:
 		Window* appWindow = nullptr;
 		WindowProps windowData = WindowProps();
