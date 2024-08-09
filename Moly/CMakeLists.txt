@@ -5,7 +5,7 @@ add_library(Moly SHARED
     src/Core/Application.cpp
     src/Core/Log.cpp
     src/Core/Window.cpp
- "src/Renderer/Shader.h"  "src/Renderer/Camera.h")
+ "src/Renderer/Shader.h"  "src/Renderer/Camera.h" "src/Renderer/Renderer.h")
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
