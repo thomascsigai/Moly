@@ -5,7 +5,7 @@ add_library(Moly SHARED
     src/Core/Application.cpp
     src/Core/Log.cpp
     src/Core/Window.cpp
-)
+ "src/Renderer/Shader.h"  "src/Renderer/Camera.h")
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
@@ -20,6 +20,7 @@ target_include_directories(Moly PUBLIC
     ${PROJECT_SOURCE_DIR}/vendor/spdlog/include
     ${PROJECT_SOURCE_DIR}/vendor/glfw/include/GLFW
     ${PROJECT_SOURCE_DIR}/vendor/glad/include
+    ${PROJECT_SOURCE_DIR}/vendor/glm
 )
 
 find_package(OpenGL REQUIRED)

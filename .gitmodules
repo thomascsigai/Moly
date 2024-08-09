@@ -4,3 +4,6 @@
 [submodule "Moly/vendor/glfw"]
 	path = Moly/vendor/glfw
 	url = https://github.com/glfw/glfw
+[submodule "Moly/vendor/glm"]
+	path = Moly/vendor/glm
+	url = https://github.com/g-truc/glm
