@@ -4,6 +4,9 @@
 
 #include <Application.h>
 #include <Log.h>
+#include <Scene.h>
+#include <Entity.h>
+#include <Vertices.h>
 
 
 // Entry point --------------

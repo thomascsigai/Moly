@@ -11,7 +11,6 @@
 #include <vector>
 
 struct Vertex {
-    // position
     glm::vec3 Position;
 };
 
