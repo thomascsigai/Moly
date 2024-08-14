@@ -2,6 +2,7 @@
 #include <Mesh.h>
 #include <Entity.h>
 #include <Vertices.h>
+#include <Scene.h>
 
 namespace Moly
 {
@@ -18,6 +19,8 @@ namespace Moly
 		ML_CORE_TRACE("Entering Main Render loop");
 		appWindow = new Window(windowData);
 
+		Scene scene1 = Scene("Scene1");
+
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;
 
@@ -29,16 +32,19 @@ namespace Moly
 
 		std::vector<Vertex> vertices2;
 		MOLY_DEFINE_TRIANGLE_VERTICES(vertices2);
-		Entity* entity = new Entity("Test Triangle", vertices2, indices, glm::vec3(0.5f), glm::vec3(1.0f), glm::vec3(0.0f, 0.0f, 90.0f));
-		//Entity* entity2 = new Entity("Test Triangle 2", vertices2, indices, glm::vec3(2.0f), glm::vec3(1.0f), glm::vec3(0.0f));
+		Entity entity = Entity("Test Triangle", vertices2, indices, shader, glm::vec3(0.5f), glm::vec3(1.0f), glm::vec3(0.0f, 0.0f, 90.0f));
+		Entity entity2 = Entity("Test Triangle 2", vertices2, indices, shader, glm::vec3(0.0f), glm::vec3(1.0f), glm::vec3(0.0f));
 		//Entity* entity3 = new Entity("Test Triangle 3", vertices2, indices, glm::vec3(2.0f), glm::vec3(1.0f), glm::vec3(0.0f));
+
+		scene1.AddEntity(entity);
+		scene1.AddEntity(entity2);
 
 		while (!appWindow->should_close())
 		{
 			appWindow->clear();
 
 			shader.use();
-			entity->Draw(shader);
+			scene1.DrawEntities();
 
 			appWindow->update();
 		}

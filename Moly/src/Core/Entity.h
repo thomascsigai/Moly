@@ -12,19 +12,19 @@ namespace Moly
 	class MOLY_API Entity
 	{
 	public:
-		Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int>indices);
-		Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int>indices, 
+		Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int>indices, Shader _shader);
+		Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int>indices, Shader _shader,
 			glm::vec3 position, glm::vec3 scale, glm::vec3 rotation);
 		
 		~Entity() = default;
 
-		void Draw(Shader&);
+		void Draw();
+
+		unsigned int index;
+		std::string name;
 
 	private:
-		unsigned int index;
 		static unsigned int nextIndex;
-
-		std::string name;
 
 		glm::vec3 position;
 		glm::vec3 scale;
@@ -32,7 +32,9 @@ namespace Moly
 
 		Mesh mesh;
 
+		Shader shader;
+
 		void LogEntityCreation();
-		void ApplyTransformations(Shader&);
+		void ApplyTransformations();
 	};
 }

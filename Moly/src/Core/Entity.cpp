@@ -5,14 +5,14 @@ namespace Moly
 {
 	unsigned int Entity::nextIndex = 0;
 	
-	Entity::Entity(std::string name, std::vector<Vertex> vertices, std::vector<unsigned int> indices) : name(name), index(nextIndex++),
-		position(glm::vec3(0.0f)), scale(glm::vec3(1.0f)), rotation(glm::vec3(0.0f)), mesh(vertices, indices)
+	Entity::Entity(std::string name, std::vector<Vertex> vertices, std::vector<unsigned int> indices, Shader _shader) : name(name), index(nextIndex++),
+		position(glm::vec3(0.0f)), scale(glm::vec3(1.0f)), rotation(glm::vec3(0.0f)), mesh(vertices, indices), shader(_shader)
 	{
 		LogEntityCreation();
 	}
 
-	Entity::Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int> indices, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) :
-		name(name), index(nextIndex++), position(position), scale(scale), rotation(rotation), mesh(vertices, indices)
+	Entity::Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int> indices, Shader _shader, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) :
+		name(name), index(nextIndex++), position(position), scale(scale), rotation(rotation), mesh(vertices, indices), shader(_shader)
 	{
 		LogEntityCreation();
 	}
@@ -29,13 +29,13 @@ namespace Moly
 		);
 	}
 
-	void Entity::Draw(Shader& shader)
+	void Entity::Draw()
 	{
-		ApplyTransformations(shader);
+		ApplyTransformations();
 		mesh.Draw(shader);
 	}
 
-	void Entity::ApplyTransformations(Shader& shader)
+	void Entity::ApplyTransformations()
 	{
 		glm::mat4 view = glm::mat4(1.0f);
 		//view = glm::lookAt(glm::vec3(camX, 1.5f, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
