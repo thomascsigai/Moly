@@ -2,7 +2,7 @@ project(Sandbox)
 
 add_executable(Sandbox src/SandboxApp.cpp)
 
-target_include_directories(Sandbox PUBLIC ${PROJECT_SOURCE_DIR}/../Moly/src/Core)
+target_include_directories(Sandbox PUBLIC ${PROJECT_SOURCE_DIR}/../Moly/src/Core ${PROJECT_SOURCE_DIR}/../Moly/src/Renderer)
 
 target_link_libraries(Sandbox Moly)
 
@@ -13,5 +13,5 @@ file(COPY ${PROJECT_SOURCE_DIR}/resources/shaders DESTINATION ${PROJECT_BINARY_D
 add_custom_command(TARGET Sandbox POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     "$<TARGET_FILE:Moly>"
-    $<TARGET_FILE_DIR:Sandbox>
+    "$<TARGET_FILE_DIR:Sandbox>"
 )

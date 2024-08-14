@@ -2,10 +2,30 @@ project(Moly)
 
 # Add dynamic library Moly
 add_library(Moly SHARED
-    src/Core/Application.cpp
-    src/Core/Log.cpp
-    src/Core/Window.cpp
- "src/Renderer/Shader.h"  "src/Renderer/Camera.h" "src/Renderer/Renderer.h" "src/Renderer/Mesh.h" "src/Renderer/Mesh.cpp")
+    "src/Core/Application.h"
+    "src/Core/Core.h"
+    "src/Core/Entity.h"
+    "src/Core/EntryPoint.h"
+    "src/Core/Log.h"
+    "src/Core/Moly.h"
+    "src/Core/Scene.cpp"
+    "src/Core/Scene.h"
+
+    "src/Core/Window.h"
+    
+    "src/Renderer/Camera.h"
+    "src/Renderer/Mesh.h"
+    "src/Renderer/Renderer.h"
+    "src/Renderer/Shader.h"
+    "src/Renderer/Vertices.h"
+    
+    "src/Core/Application.cpp"
+    "src/Core/Log.cpp"
+    "src/Core/Window.cpp"
+    "src/Core/Entity.cpp"
+    
+    "src/Renderer/Mesh.cpp"
+ )
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)

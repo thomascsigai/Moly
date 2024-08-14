@@ -29,14 +29,16 @@ namespace Moly
 
 		std::vector<Vertex> vertices2;
 		MOLY_DEFINE_TRIANGLE_VERTICES(vertices2);
-		Moly::Entity entity = Moly::Entity("Test Triangle", vertices2, indices);
+		Entity* entity = new Entity("Test Triangle", vertices2, indices, glm::vec3(0.5f), glm::vec3(1.0f), glm::vec3(0.0f, 0.0f, 90.0f));
+		//Entity* entity2 = new Entity("Test Triangle 2", vertices2, indices, glm::vec3(2.0f), glm::vec3(1.0f), glm::vec3(0.0f));
+		//Entity* entity3 = new Entity("Test Triangle 3", vertices2, indices, glm::vec3(2.0f), glm::vec3(1.0f), glm::vec3(0.0f));
 
 		while (!appWindow->should_close())
 		{
 			appWindow->clear();
 
 			shader.use();
-			entity.Draw(shader);
+			entity->Draw(shader);
 
 			appWindow->update();
 		}
