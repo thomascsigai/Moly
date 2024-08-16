@@ -29,6 +29,7 @@ add_library(Moly SHARED
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
+add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/ImGui)
 
 target_include_directories(Moly PRIVATE 
     ${PROJECT_SOURCE_DIR}/src
@@ -43,10 +44,11 @@ target_include_directories(Moly PUBLIC
     ${PROJECT_SOURCE_DIR}/vendor/glad/include
     ${PROJECT_SOURCE_DIR}/vendor/glm
     ${PROJECT_SOURCE_DIR}/vendor/ImGUI
+    ${PROJECT_SOURCE_DIR}/vendor/ImGUI/backends
 )
 
 find_package(OpenGL REQUIRED)
 
-target_link_libraries(Moly PRIVATE glad glfw ${OPENGL_LIBRARIES})
+target_link_libraries(Moly PRIVATE glad glfw ImGui ${OPENGL_LIBRARIES})
 # Define macros
 target_compile_definitions(Moly PRIVATE ML_PLATFORM_WINDOWS ML_BUILD_DLL)

@@ -19,6 +19,8 @@ namespace Moly
 	private:
 		Window* appWindow = nullptr;
 		WindowProps windowData = WindowProps();
+
+		void DrawDebugWindow();
 	};
 
 	//To be defined in client

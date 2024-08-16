@@ -70,8 +70,24 @@ namespace Moly
 
         glEnable(GL_DEPTH_TEST);
 
+        InitImGui();
+        ML_CORE_INFO("ImGui Initialized");
+
         ML_CORE_INFO("Window {0} created", props.Title, props.Width, props.Height);
 	}
+
+    void Window::InitImGui()
+    {
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+
+        ImGui::StyleColorsDark();
+
+        ImGui_ImplGlfw_InitForOpenGL(windowGLFW, true);
+        ImGui_ImplOpenGL3_Init("#version 450");
+    }
 
     bool Window::Should_close()
     {

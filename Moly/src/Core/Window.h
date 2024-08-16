@@ -7,6 +7,10 @@
 #include <glad/glad.h>
 #include <glfw3.h>
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+#include <imgui_impl_opengl3.h>
+
 namespace Moly {
 
 	struct WindowProps
@@ -46,5 +50,7 @@ namespace Moly {
 
 		WindowProps windowData;
 		GLFWwindow* windowGLFW;
+
+		void Window::InitImGui();
 	};
 }
