@@ -1,5 +1,6 @@
 #include <Entity.h>
 #include <Log.h>
+#include <TimeManipulation.h>
 
 namespace Moly
 {
@@ -38,16 +39,20 @@ namespace Moly
 	void Entity::ApplyTransformations()
 	{
 		glm::mat4 view = glm::mat4(1.0f);
-		//view = glm::lookAt(glm::vec3(camX, 1.5f, camZ), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+		view = glm::lookAt(glm::vec3(-2.0f, 1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-		glm::mat4 projection = glm::mat4(1.0f);
-		//projection = glm::perspective(glm::radians(60.0f), 1600.0f / 900.0f, 0.1f, 100.0f);
+		//glm::mat4 projection = glm::mat4(1.0f);
+		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
 
 		glm::mat4 model = glm::mat4(1.0f);
 		model = glm::scale(model, scale);
 		model = glm::rotate(model, glm::radians(rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+		
+		// Rotate on himself
+		model = glm::rotate(model, glm::radians(50.0f) * TimeManipulation::GameTime, glm::vec3(0.0f, 1.0f, 0.0f));
+
 		model = glm::translate(model, position);
 
 		int viewLoc = glGetUniformLocation(shader.ID, "view");

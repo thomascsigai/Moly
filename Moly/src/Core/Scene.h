@@ -13,7 +13,7 @@ namespace Moly
 	class MOLY_API Scene
 	{
 	public:
-		Scene(std::string name);
+		Scene(std::string _name);
 		~Scene() = default;
 
 		void AddEntity(Entity& _entity);

@@ -1,8 +1,13 @@
 #include <Window.h>
+#include <TimeManipulation.h>
 
 namespace Moly
 {
 	static uint8_t s_GLFWWindowCount = 0;
+    // Initializing Time Manipulation
+    float TimeManipulation::DeltaTime = 0.0f;
+    float TimeManipulation::LastFrame = 0.0f;
+    float TimeManipulation::GameTime = 0.0f;
 
 	static void GLFWErrorCallback(int error, const char* description)
 	{
@@ -61,26 +66,28 @@ namespace Moly
         glViewport(0, 0, windowData.Width, windowData.Height);
         glfwSetFramebufferSizeCallback(windowGLFW, framebuffer_size_callback);
         glfwSetWindowUserPointer(windowGLFW, &windowData);
-        glfwSetWindowPos(windowGLFW, 100, 100);
+        glfwSetWindowPos(windowGLFW, 0, 0);
 
         glEnable(GL_DEPTH_TEST);
 
         ML_CORE_INFO("Window {0} created", props.Title, props.Width, props.Height);
 	}
 
-    bool Window::should_close()
+    bool Window::Should_close()
     {
         return glfwWindowShouldClose(windowGLFW);
     }
 
-    void Window::clear()
+    void Window::Clear()
     {
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
-    void Window::update()
+    void Window::Update()
     {
+        TimeManipulation::Update(static_cast<float>(glfwGetTime()));
+        
         glfwSwapBuffers(windowGLFW);
         glfwPollEvents();
     }

@@ -31,9 +31,9 @@ namespace Moly {
 		Window(const WindowProps& props);
 		~Window() = default;
 
-		void clear();
-		void update();
-		bool should_close();
+		void Clear();
+		void Update();
+		bool Should_close();
 
 		uint32_t GetWidth() const;
 		uint32_t GetHeight() const;
