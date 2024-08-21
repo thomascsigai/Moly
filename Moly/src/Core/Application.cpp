@@ -91,7 +91,7 @@ namespace Moly
 
 		ImGui::Begin(windowData.Title.c_str());
 
-		if (ImGui::CollapsingHeader("Camera"))
+		if (ImGui::CollapsingHeader("Scene Camera", ImGuiTreeNodeFlags_DefaultOpen))
 		{
 			ImGui::Checkbox("Lock View on Scene Origin", &currentScene.GetCurrentCam()->lockView);
 
@@ -128,6 +128,7 @@ namespace Moly
 				ImGui::SetNextItemWidth(50.0f);
 				ImGui::DragFloat("##MyDrag6", &currentScene.GetCurrentCam()->rotation.z, 0.01f, -1000.0f, 1000.0f, "%.1f");
 			}
+			ImGui::NewLine();
 		}
 
 		if (ImGui::CollapsingHeader("Performance"))
@@ -147,7 +148,8 @@ namespace Moly
 			bool VSync = appWindow->IsVSync();
 			ImGui::Checkbox("Enable VSync", &VSync);
 			appWindow->SetVSync(VSync);
-		
+			
+			ImGui::NewLine();
 		}
 
 		ImGui::End();
