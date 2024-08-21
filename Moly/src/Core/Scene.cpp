@@ -4,7 +4,7 @@ namespace Moly
 {
 	unsigned int Scene::nextIndex = 0;
 
-	Scene::Scene(std::string _name) : name(name), index(nextIndex++), sceneEntities()
+	Scene::Scene(std::string _name) : name(name), index(nextIndex++), sceneEntities(), currentCam()
 	{
 		LogSceneCreation();
 	}
@@ -25,7 +25,12 @@ namespace Moly
 	{
 		for (Entity entity : sceneEntities)
 		{
-			entity.Draw();
+			entity.Draw(currentCam);
 		}
+	}
+
+	Camera* Scene::GetCurrentCam()
+	{
+		return &currentCam;
 	}
 }

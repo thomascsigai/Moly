@@ -30,16 +30,30 @@ namespace Moly
 		);
 	}
 
-	void Entity::Draw()
+	void Entity::Draw(Camera& camera)
 	{
-		ApplyTransformations();
+		ApplyTransformations(camera);
 		mesh.Draw(shader);
 	}
 
-	void Entity::ApplyTransformations()
+	void Entity::ApplyTransformations(Camera& camera)
 	{
 		glm::mat4 view = glm::mat4(1.0f);
-		view = glm::lookAt(glm::vec3(-2.0f, 1.0f, -2.0f), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		
+		if (camera.lockView)
+		{
+			float camX = sin(camera.rotAroundValue) * camera.distanceFromOrigin;
+			float camZ = cos(camera.rotAroundValue) * camera.distanceFromOrigin;
+			float camY = camera.rotUpValue;
+			view = glm::lookAt(glm::vec3(camX, camY, camZ), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+		}
+		else
+		{
+			view = glm::rotate(view, glm::radians(camera.rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+			view = glm::rotate(view, glm::radians(camera.rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+			view = glm::rotate(view, glm::radians(camera.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+			view = glm::translate(view, camera.position);
+		}
 
 		//glm::mat4 projection = glm::mat4(1.0f);
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
@@ -50,8 +64,8 @@ namespace Moly
 		model = glm::rotate(model, glm::radians(rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
 		model = glm::rotate(model, glm::radians(rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
 		
-		// Rotate on himself
-		model = glm::rotate(model, glm::radians(50.0f) * TimeManipulation::GameTime, glm::vec3(0.0f, 1.0f, 0.0f));
+		//// Rotate on himself
+		//model = glm::rotate(model, glm::radians(50.0f) * TimeManipulation::GameTime, glm::vec3(0.0f, 1.0f, 0.0f));
 
 		model = glm::translate(model, position);
 

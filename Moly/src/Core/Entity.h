@@ -2,6 +2,7 @@
 
 #include <Core.h>
 #include <Mesh.h>
+#include <Camera.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -18,10 +19,11 @@ namespace Moly
 		
 		~Entity() = default;
 
-		void Draw();
+		void Draw(Camera& camera);
 
 		unsigned int index;
 		std::string name;
+
 
 	private:
 		static unsigned int nextIndex;
@@ -35,6 +37,6 @@ namespace Moly
 		Shader shader;
 
 		void LogEntityCreation();
-		void ApplyTransformations();
+		void ApplyTransformations(Camera& camera);
 	};
 }

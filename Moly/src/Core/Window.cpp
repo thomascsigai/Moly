@@ -66,7 +66,7 @@ namespace Moly
         glViewport(0, 0, windowData.Width, windowData.Height);
         glfwSetFramebufferSizeCallback(windowGLFW, framebuffer_size_callback);
         glfwSetWindowUserPointer(windowGLFW, &windowData);
-        glfwSetWindowPos(windowGLFW, 0, 0);
+        glfwSetWindowPos(windowGLFW, 100, 100);
 
         glEnable(GL_DEPTH_TEST);
 
@@ -126,15 +126,10 @@ namespace Moly
     void Window::SetVSync(bool enabled)
     {
         if (enabled)
-        {
-            ML_CORE_INFO("VSync enabled");
             glfwSwapInterval(1);
-        }
         else
-        {
-            ML_CORE_INFO("VSync disabled");
             glfwSwapInterval(0);
-        }
+        
         windowData.VSync = enabled;
     }
 }
