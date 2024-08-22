@@ -24,6 +24,7 @@ namespace Moly
 		unsigned int index;
 		std::string name;
 
+		bool isLight;
 
 	private:
 		static unsigned int nextIndex;
@@ -39,6 +40,5 @@ namespace Moly
 		void LogEntityCreation();
 		void ApplyTransformations(Camera& camera);
 
-		bool isLight;
 	};
 }

@@ -41,9 +41,12 @@ namespace Moly
 		{
 			shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
 			shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+			shader.setVec3("lightPos", 3.0f, 2.0f, 5.0f);
+			shader.setVec3("viewPos", camera.position.x, camera.position.y, camera.position.z);
 		}
 
 		ApplyTransformations(camera);
+
 		mesh.Draw(shader);
 	}
 
@@ -56,7 +59,10 @@ namespace Moly
 			float camX = sin(camera.rotAroundValue) * camera.distanceFromOrigin;
 			float camZ = cos(camera.rotAroundValue) * camera.distanceFromOrigin;
 			float camY = camera.rotUpValue;
-			view = glm::lookAt(glm::vec3(camX, camY, camZ), glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+			camera.position = glm::vec3(camX, camY, camZ);
+
+			view = glm::lookAt(camera.position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		}
 		else
 		{

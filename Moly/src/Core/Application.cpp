@@ -28,40 +28,11 @@ namespace Moly
 
 		Scene scene1 = Scene("Scene1");
 
-		std::vector<Vertex> vertices;
-		MOLY_DEFINE_CUBE_VERTICES(vertices);
-
-		std::vector<unsigned int> indices{
-			//Top
-			2, 6, 7,
-			2, 3, 7,
-
-			//Bottom
-			0, 4, 5,
-			0, 1, 5,
-
-			//Left
-			0, 2, 6,
-			0, 4, 6,
-
-			//Right
-			1, 3, 7,
-			1, 5, 7,
-
-			//Front
-			0, 2, 3,
-			0, 1, 3,
-
-			//Back
-			4, 6, 7,
-			4, 5, 7
-		};
-
 		Shader shader = Shader("resources/shaders/basic.vert", "resources/shaders/basic.frag");
 		Shader lightShader = Shader("resources/shaders/basic.vert", "resources/shaders/light.frag");
 		
-		Entity cube = Entity("Cube1", vertices, indices, shader, false);
-		Entity light = Entity("Light1", vertices, indices, lightShader, true, glm::vec3(2.0f), glm::vec3(.5f), glm::vec3(0.0f));
+		Entity cube = Entity("Cube1", MOLY_CUBE_NORMAL_VERTICES(), {}, shader, false);
+		Entity light = Entity("Light1", MOLY_CUBE_NORMAL_VERTICES(), {}, lightShader, true, glm::vec3(3.0f, 2.0f, 5.0f), glm::vec3(.5f), glm::vec3(0.0f));
 
 		scene1.AddEntity(cube);
 		scene1.AddEntity(light);
