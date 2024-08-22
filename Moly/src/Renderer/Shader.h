@@ -3,6 +3,8 @@
 
 #include <glad/glad.h>
 
+#include <Log.h>
+
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -91,6 +93,11 @@ public:
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
     // ------------------------------------------------------------------------
+    void setVec3(const std::string& name, float v0, float v1, float v2)
+    {
+        glUniform3f(glGetUniformLocation(ID, name.c_str()), v0, v1, v2);
+    }
+    // ------------------------------------------------------------------------
     void setVec4(const std::string& name, float v0, float v1, float v2, float v3)
     {
         glUniform4f(glGetUniformLocation(ID, name.c_str()), v0, v1, v2, v3);
@@ -109,7 +116,7 @@ private:
             if (!success)
             {
                 glGetShaderInfoLog(shader, 1024, NULL, infoLog);
-                std::cout << "ERROR::SHADER_COMPILATION_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+                ML_CORE_ERROR("ERROR::SHADER_COMPILATION_ERROR of type: {0}\n{1}\n", type, infoLog);
             }
         }
         else
@@ -118,7 +125,7 @@ private:
             if (!success)
             {
                 glGetProgramInfoLog(shader, 1024, NULL, infoLog);
-                std::cout << "ERROR::PROGRAM_LINKING_ERROR of type: " << type << "\n" << infoLog << "\n -- --------------------------------------------------- -- " << std::endl;
+                ML_CORE_ERROR("ERROR::PROGRAM_LINKING_ERROR of type: {0}\n{1}\n", type, infoLog);
             }
         }
     }

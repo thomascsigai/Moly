@@ -25,7 +25,7 @@ add_library(Moly SHARED
     src/Core/Entity.cpp
     
     src/Renderer/Mesh.cpp
-   "src/Core/TimeManipulation.h")
+   "src/Core/TimeManipulation.h" "src/Renderer/Light.h")
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)

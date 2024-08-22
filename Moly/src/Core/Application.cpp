@@ -58,10 +58,11 @@ namespace Moly
 		};
 
 		Shader shader = Shader("resources/shaders/basic.vert", "resources/shaders/basic.frag");
-		Entity cube = Entity("Cube1", vertices, indices, shader);
-
-		Entity light = Entity("Light1", vertices, indices, shader, glm::vec3(2.0f), glm::vec3(.5f), glm::vec3(0.0f));
+		Shader lightShader = Shader("resources/shaders/basic.vert", "resources/shaders/light.frag");
 		
+		Entity cube = Entity("Cube1", vertices, indices, shader, false);
+		Entity light = Entity("Light1", vertices, indices, lightShader, true, glm::vec3(2.0f), glm::vec3(.5f), glm::vec3(0.0f));
+
 		scene1.AddEntity(cube);
 		scene1.AddEntity(light);
 
@@ -69,7 +70,6 @@ namespace Moly
 		{
 			appWindow->Clear();
 
-			shader.use();
 			scene1.DrawEntities();
 
 			DrawDebugWindow(scene1);

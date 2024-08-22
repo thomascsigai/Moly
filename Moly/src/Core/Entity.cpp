@@ -6,14 +6,17 @@ namespace Moly
 {
 	unsigned int Entity::nextIndex = 0;
 	
-	Entity::Entity(std::string name, std::vector<Vertex> vertices, std::vector<unsigned int> indices, Shader _shader) : name(name), index(nextIndex++),
-		position(glm::vec3(0.0f)), scale(glm::vec3(1.0f)), rotation(glm::vec3(0.0f)), mesh(vertices, indices), shader(_shader)
+	Entity::Entity(std::string name, std::vector<Vertex> vertices, std::vector<unsigned int> indices, Shader _shader, bool _isLight) : 
+		name(name), index(nextIndex++), position(glm::vec3(0.0f)), scale(glm::vec3(1.0f)), rotation(glm::vec3(0.0f)), 
+		mesh(vertices, indices), shader(_shader), isLight(_isLight)
 	{
 		LogEntityCreation();
 	}
 
-	Entity::Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int> indices, Shader _shader, glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) :
-		name(name), index(nextIndex++), position(position), scale(scale), rotation(rotation), mesh(vertices, indices), shader(_shader)
+	Entity::Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int> indices, Shader _shader, bool _isLight,
+		glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) :
+		name(name), index(nextIndex++), position(position), scale(scale), rotation(rotation), isLight(_isLight),
+		mesh(vertices, indices), shader(_shader)
 	{
 		LogEntityCreation();
 	}
@@ -32,6 +35,14 @@ namespace Moly
 
 	void Entity::Draw(Camera& camera)
 	{
+		shader.use();
+
+		if (!isLight)
+		{
+			shader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+			shader.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
+		}
+
 		ApplyTransformations(camera);
 		mesh.Draw(shader);
 	}
