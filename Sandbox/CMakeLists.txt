@@ -8,7 +8,7 @@ target_link_libraries(Sandbox Moly)
 
 target_compile_definitions(Sandbox PRIVATE ML_PLATFORM_WINDOWS)
 
-file(COPY ${PROJECT_SOURCE_DIR}/resources/shaders DESTINATION ${PROJECT_BINARY_DIR}/resources)
+file(COPY ${PROJECT_SOURCE_DIR}/resources/ DESTINATION ${PROJECT_BINARY_DIR}/resources)
 
 add_custom_command(TARGET Sandbox POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different

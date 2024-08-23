@@ -24,12 +24,13 @@ add_library(Moly SHARED
     src/Core/Window.cpp
     src/Core/Entity.cpp
     
-    src/Renderer/Mesh.cpp
-   "src/Core/TimeManipulation.h" )
+    
+   "src/Core/TimeManipulation.h"  "src/Renderer/Model.h" "vendor/stb_image/stb_image.cpp")
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/ImGui)
+add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/assimp)
 
 target_include_directories(Moly PRIVATE 
     ${PROJECT_SOURCE_DIR}/src
@@ -45,10 +46,12 @@ target_include_directories(Moly PUBLIC
     ${PROJECT_SOURCE_DIR}/vendor/glm
     ${PROJECT_SOURCE_DIR}/vendor/ImGUI
     ${PROJECT_SOURCE_DIR}/vendor/ImGUI/backends
+    ${PROJECT_SOURCE_DIR}/vendor/assimp/INCLUDE_DIRECTORIES
+    ${PROJECT_SOURCE_DIR}/vendor/stb_image/
 )
 
 find_package(OpenGL REQUIRED)
 
-target_link_libraries(Moly PRIVATE glad glfw ImGui ${OPENGL_LIBRARIES})
+target_link_libraries(Moly PRIVATE glad glfw ImGui assimp ${OPENGL_LIBRARIES})
 # Define macros
 target_compile_definitions(Moly PRIVATE ML_PLATFORM_WINDOWS ML_BUILD_DLL)

@@ -7,16 +7,14 @@ namespace Moly
 	unsigned int Entity::nextIndex = 0;
 	
 	Entity::Entity(std::string name, std::vector<Vertex> vertices, std::vector<unsigned int> indices, Shader _shader, bool _isLight) : 
-		name(name), index(nextIndex++), position(glm::vec3(0.0f)), scale(glm::vec3(1.0f)), rotation(glm::vec3(0.0f)), 
-		mesh(vertices, indices), shader(_shader), isLight(_isLight)
+		name(name), index(nextIndex++), position(glm::vec3(0.0f)), scale(glm::vec3(1.0f)), rotation(glm::vec3(0.0f)), shader(_shader), isLight(_isLight)
 	{
 		LogEntityCreation();
 	}
 
 	Entity::Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int> indices, Shader _shader, bool _isLight,
 		glm::vec3 position, glm::vec3 scale, glm::vec3 rotation) :
-		name(name), index(nextIndex++), position(position), scale(scale), rotation(rotation), isLight(_isLight),
-		mesh(vertices, indices), shader(_shader)
+		name(name), index(nextIndex++), position(position), scale(scale), rotation(rotation), isLight(_isLight), shader(_shader)
 	{
 		LogEntityCreation();
 	}
@@ -47,7 +45,7 @@ namespace Moly
 
 		ApplyTransformations(camera);
 
-		mesh.Draw(shader);
+		//mesh.Draw(shader);
 	}
 
 	void Entity::ApplyTransformations(Camera& camera)
@@ -56,21 +54,34 @@ namespace Moly
 		
 		if (camera.lockView)
 		{
+			// 1. Calculer la position de la caméra autour de l'origine
 			float camX = sin(camera.rotAroundValue) * camera.distanceFromOrigin;
 			float camZ = cos(camera.rotAroundValue) * camera.distanceFromOrigin;
 			float camY = camera.rotUpValue;
 
 			camera.position = glm::vec3(camX, camY, camZ);
 
+			// 2. Générer la matrice de vue
 			view = glm::lookAt(camera.position, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+			// 3. Inverser la matrice de vue pour obtenir la matrice de transformation de la caméra
+			glm::mat4 cameraTransform = glm::inverse(view);
+
+			// 4. Extraire les angles de rotation (en radians) de la matrice de transformation
+			glm::vec3 eulerAngles = glm::eulerAngles(glm::quat_cast(cameraTransform));
+
+			// 5. Convertir les angles de rotation en degrés et les stocker dans camera.rotation
+			camera.rotation = glm::degrees(eulerAngles);
 		}
 		else
 		{
-			view = glm::rotate(view, glm::radians(camera.rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-			view = glm::rotate(view, glm::radians(camera.rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-			view = glm::rotate(view, glm::radians(camera.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-			view = glm::translate(view, camera.position);
+			view = glm::rotate(view, glm::radians(-camera.rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+			view = glm::rotate(view, glm::radians(-camera.rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+			view = glm::rotate(view, glm::radians(-camera.rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+			view = glm::translate(view, -camera.position);
 		}
+
+		ML_CORE_TRACE("x={0} y={1} z={2}", camera.position.x, camera.position.y, camera.position.z);
 
 		//glm::mat4 projection = glm::mat4(1.0f);
 		glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);

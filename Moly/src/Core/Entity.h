@@ -33,8 +33,6 @@ namespace Moly
 		glm::vec3 scale;
 		glm::vec3 rotation;
 
-		Mesh mesh;
-
 		Shader shader;
 
 		void LogEntityCreation();

@@ -32,6 +32,8 @@ namespace Moly
 
 		ML_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
+        stbi_set_flip_vertically_on_load(true);
+
 		if (s_GLFWWindowCount == 0)
 		{
 			int success = glfwInit();
@@ -96,7 +98,7 @@ namespace Moly
 
     void Window::Clear()
     {
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
