@@ -13,7 +13,7 @@ namespace Moly
 	class MOLY_API Entity
 	{
 	public:
-		Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int>indices, Shader _shader, bool _isLight);
+		Entity();
 		Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int>indices, Shader _shader, bool _isLight,
 			glm::vec3 position, glm::vec3 scale, glm::vec3 rotation);
 		
@@ -23,8 +23,6 @@ namespace Moly
 
 		unsigned int index;
 		std::string name;
-
-		bool isLight;
 
 	private:
 		static unsigned int nextIndex;
