@@ -2,7 +2,11 @@ project(Sandbox)
 
 add_executable(Sandbox src/SandboxApp.cpp)
 
-target_include_directories(Sandbox PUBLIC ${PROJECT_SOURCE_DIR}/../Moly/src/Core ${PROJECT_SOURCE_DIR}/../Moly/src/Renderer)
+target_include_directories(Sandbox PUBLIC 
+${PROJECT_SOURCE_DIR}/../Moly/src/Core
+${PROJECT_SOURCE_DIR}/../Moly/src/Renderer
+${PROJECT_SOURCE_DIR}/../Moly/src/Scene
+)
 
 target_link_libraries(Sandbox Moly)
 

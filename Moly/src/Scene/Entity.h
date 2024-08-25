@@ -1,40 +1,41 @@
 #pragma once
 
 #include <Core.h>
-#include <Mesh.h>
-#include <Camera.h>
+#include <Components.h>
+
+#include <string>
+#include <memory>
+#include <typeindex>
 
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 namespace Moly
 {
-	class MOLY_API Entity
-	{
-	public:
-		Entity();
-		Entity(std::string name, std::vector<Vertex>vertices, std::vector<unsigned int>indices, Shader _shader, bool _isLight,
-			glm::vec3 position, glm::vec3 scale, glm::vec3 rotation);
-		
-		~Entity() = default;
+    class MOLY_API Entity {
+    public:
+        using EntityID = std::size_t;
 
-		void Draw(Camera& camera);
+    public:
+        Entity(EntityID id) : id(id) {}
 
-		unsigned int index;
-		std::string name;
+        EntityID getID() const { return id; }
 
-	private:
-		static unsigned int nextIndex;
+        template<typename T>
+        void addComponent(std::shared_ptr<T> component) {
+            components[std::type_index(typeid(T))] = component;
+        }
 
-		glm::vec3 position;
-		glm::vec3 scale;
-		glm::vec3 rotation;
+        template<typename T>
+        std::shared_ptr<T> getComponent() {
+            auto it = components.find(std::type_index(typeid(T)));
+            if (it != components.end()) {
+                return std::static_pointer_cast<T>(it->second);
+            }
+            return nullptr;
+        }
+    private:
+        EntityID id;
+        std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
 
-		Shader shader;
-
-		void LogEntityCreation();
-		void ApplyTransformations(Camera& camera);
-
-	};
+    };
 }

@@ -2,35 +2,22 @@
 
 namespace Moly
 {
-	unsigned int Scene::nextIndex = 0;
+    Scene::Scene(std::string _name)
+        : name(_name), entities(), renderer() 
+    {
+        ML_CORE_INFO("Scene \"{0}\" created", name);
+    }
 
-	Scene::Scene(std::string _name) : name(name), index(nextIndex++), sceneEntities(), currentCam()
-	{
-		LogSceneCreation();
-	}
+    std::shared_ptr<Entity> Scene::createEntity()
+    {
+        auto entity = std::make_shared<Entity>(nextID++);
+        entities.push_back(entity);
+        ML_CORE_INFO("Entity {0} created and added to \"{1}\"", nextID, name);
+        return entity;
+    }
 
-	void Scene::LogSceneCreation()
-	{
-		ML_CORE_INFO("Created Scene {0} (id: {1})", name, index);
-	}
-
-	void Scene::AddEntity(Entity& _entity)
-	{
-		sceneEntities.push_back(_entity);
-		ML_CORE_INFO("Entity {0} (id: {1}) added to Scene {2} (id: {3})", _entity.name, _entity.index,
-			name, index);
-	}
-
-	void Scene::DrawEntities()
-	{
-		for (Entity entity : sceneEntities)
-		{
-			entity.Draw(currentCam);
-		}
-	}
-
-	Camera* Scene::GetCurrentCam()
-	{
-		return &currentCam;
-	}
+    void Scene::Update()
+    {
+        renderer.render(entities);
+    }
 }

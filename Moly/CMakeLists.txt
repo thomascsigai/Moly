@@ -4,12 +4,13 @@ project(Moly)
 add_library(Moly SHARED
     src/Core/Application.h
     src/Core/Core.h
-    src/Core/Entity.h
     src/Core/EntryPoint.h
     src/Core/Log.h
     src/Core/Moly.h
-    src/Core/Scene.cpp
-    src/Core/Scene.h
+    src/Scene/Scene.h
+    src/Scene/Entity.h
+    src/Scene/Components.h
+    src/Scene/Scene.cpp
 
     src/Core/Window.h
     
@@ -18,14 +19,15 @@ add_library(Moly SHARED
     src/Renderer/Renderer.h
     src/Renderer/Shader.h
     src/Renderer/Vertices.h
+    src/Renderer/Model.h
     
     src/Core/Application.cpp
     src/Core/Log.cpp
     src/Core/Window.cpp
-    src/Core/Entity.cpp
     
     
-   "src/Core/TimeManipulation.h"  "src/Renderer/Model.h" "vendor/stb_image/stb_image.cpp")
+    
+   "src/Core/TimeManipulation.h"   "vendor/stb_image/stb_image.cpp" "src/Renderer/Model.cpp")
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
@@ -36,6 +38,7 @@ target_include_directories(Moly PRIVATE
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/Core
     ${PROJECT_SOURCE_DIR}/src/Renderer
+    ${PROJECT_SOURCE_DIR}/src/Scene
 )
 
 # Include thirdparty libraries
@@ -46,8 +49,9 @@ target_include_directories(Moly PUBLIC
     ${PROJECT_SOURCE_DIR}/vendor/glm
     ${PROJECT_SOURCE_DIR}/vendor/ImGUI
     ${PROJECT_SOURCE_DIR}/vendor/ImGUI/backends
-    ${PROJECT_SOURCE_DIR}/vendor/assimp/INCLUDE_DIRECTORIES
-    ${PROJECT_SOURCE_DIR}/vendor/stb_image/
+    ${PROJECT_SOURCE_DIR}/vendor/assimp/include
+    ${PROJECT_BINARY_DIR}/vendor/assimp/include
+    ${PROJECT_SOURCE_DIR}/vendor/stb_image
 )
 
 find_package(OpenGL REQUIRED)

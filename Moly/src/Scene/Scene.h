@@ -4,33 +4,29 @@
 
 #include <Entity.h>
 #include <Log.h>
-#include <Camera.h>
+#include <Renderer.h>
 
 #include <vector>
 #include <string>
 
 namespace Moly
 {
-	class MOLY_API Scene
-	{
-	public:
-		Scene(std::string _name);
-		~Scene() = default;
+    class MOLY_API Scene
+    {
+    public:
+        Scene(std::string _name = "Default Scene");
+        ~Scene() = default;
 
-		void AddEntity(Entity& _entity);
-		void DrawEntities();
+        std::shared_ptr<Entity> createEntity();
 
-		Camera* GetCurrentCam();
+        void Update();
 
-	private:
-		unsigned int index;
-		static unsigned int nextIndex;
+    private:
+        std::string name;
 
-		std::string name;
+        std::vector<std::shared_ptr<Entity>> entities;
+        Entity::EntityID nextID = 0;
+        Renderer renderer;
 
-		std::vector<Entity> sceneEntities;
-		Camera currentCam;
-
-		void LogSceneCreation();
-	};
+    };
 }
