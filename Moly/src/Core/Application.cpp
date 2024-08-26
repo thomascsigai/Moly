@@ -4,7 +4,7 @@
 
 namespace Moly
 {
-	// Nombre maximum d'échantillons que nous allons stocker (par exemple 100)
+	// Nombre maximum d'ï¿½chantillons que nous allons stocker (par exemple 100)
 	static const int MAX_FPS_SAMPLES = 100;
 
 	// Tableau circulaire pour stocker les FPS
@@ -25,33 +25,18 @@ namespace Moly
 		appWindow = new Window(windowData);
 
 		Scene scene = Scene();
-		auto entity1 = scene.createEntity();
-		entity1->addComponent(std::make_shared<TransformComponent>());
-		entity1->addComponent(std::make_shared<ModelComponent>("resources/models/backpack/backpack.obj"));
+		auto entity1 = scene.createEntity("Spider");
+		entity1->AddComponent(std::make_shared<TransformComponent>());
+		entity1->AddComponent(std::make_shared<ModelComponent>("resources/models/backpack/backpack.obj"));
+
+		auto entity2 = scene.createEntity("Box");
+		entity2->AddComponent(std::make_shared<TransformComponent>(glm::vec3(1.0f)));
+		entity2->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
 
 		while (!appWindow->Should_close())
 		{
 			appWindow->Clear();
 			scene.Update();
-
-			////scene1.DrawEntities();
-			//// don't forget to enable shader before setting uniforms
-			//Modelshader.use();
-
-			//// view/projection transformations
-			//glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 100.0f);
-			//glm::mat4 view = glm::mat4(1.0f);
-			//view = glm::translate(view, glm::vec3(0.0f, 0.0f, -5.0f));
-			//Modelshader.setMat4("projection", projection);
-			//Modelshader.setMat4("view", view);
-
-			//// render the loaded model
-			//glm::mat4 model = glm::mat4(1.0f);
-			//model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-			//model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));	// it's a bit too big for our scene, so scale it down
-			//Modelshader.setMat4("model", model);
-			//backpack.Draw(Modelshader);
-
 
 			DrawDebugWindow(scene);
 			appWindow->Update();
@@ -71,6 +56,63 @@ namespace Moly
 		ImGui::NewFrame();
 
 		ImGui::Begin(windowData.Title.c_str());
+
+		if (ImGui::CollapsingHeader("Scene Hierarchy", ImGuiTreeNodeFlags_DefaultOpen))
+		{
+			std::vector<std::shared_ptr<Entity>> entities = scene.GetEntities();
+				
+			for (int i = 0; i < entities.size(); i++)
+			{
+				std::shared_ptr<TransformComponent> transform = entities[i]->GetComponent<TransformComponent>();
+				ImGui::PushID(i);
+				if (ImGui::TreeNode("", "%s", entities[i]->GetName().c_str()))
+				{
+					if (!transform)
+					{
+						ImGui::Text("No Transform");
+						ImGui::TreePop();
+						ImGui::PopID();
+						continue;
+					}
+
+					ImGui::Text("Position		"); ImGui::SameLine();
+					ImGui::Text("X"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(50.0f);
+					ImGui::DragFloat("##MyDrag", &(transform->Translation.x), 0.01f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
+					ImGui::Text("Y"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(50.0f);
+					ImGui::DragFloat("##MyDrag2", &(transform->Translation.y), 0.01f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
+					ImGui::Text("Z"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(50.0f);
+					ImGui::DragFloat("##MyDrag3", &(transform->Translation.z), 0.01f, -1000.0f, 1000.0f, "%.2f");
+
+					ImGui::Text("Rotation		"); ImGui::SameLine();
+					ImGui::Text("X"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(50.0f);
+					ImGui::DragFloat("##MyDrag4", &(transform->Rotation.x), 0.01f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
+					ImGui::Text("Y"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(50.0f);
+					ImGui::DragFloat("##MyDrag5", &(transform->Rotation.y), 0.01f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
+					ImGui::Text("Z"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(50.0f);
+					ImGui::DragFloat("##MyDrag6", &(transform->Rotation.z), 0.01f, -1000.0f, 1000.0f, "%.2f");
+
+					ImGui::Text("Scale		"); ImGui::SameLine();
+					ImGui::Text("X"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(50.0f);
+					ImGui::DragFloat("##MyDrag7", &(transform->Scale.x), 0.01f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
+					ImGui::Text("Y"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(50.0f);
+					ImGui::DragFloat("##MyDrag8", &(transform->Scale.y), 0.01f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
+					ImGui::Text("Z"); ImGui::SameLine();
+					ImGui::SetNextItemWidth(50.0f);
+					ImGui::DragFloat("##MyDrag9", &(transform->Scale.z), 0.01f, -1000.0f, 1000.0f, "%.2f");
+					ImGui::TreePop();
+
+				}
+				ImGui::PopID();
+			}
+		}
 
 		/*if (ImGui::CollapsingHeader("Scene Camera", ImGuiTreeNodeFlags_DefaultOpen))
 		{

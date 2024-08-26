@@ -2,39 +2,21 @@ project(Moly)
 
 # Add dynamic library Moly
 add_library(Moly SHARED
-    src/Core/Application.h
-    src/Core/Core.h
-    src/Core/EntryPoint.h
-    src/Core/Log.h
-    src/Core/Moly.h
-    src/Scene/Scene.h
-    src/Scene/Entity.h
-    src/Scene/Components.h
-    src/Scene/Scene.cpp
-
-    src/Core/Window.h
-    
-    src/Renderer/Camera.h
-    src/Renderer/Mesh.h
-    src/Renderer/Renderer.h
-    src/Renderer/Shader.h
-    src/Renderer/Vertices.h
-    src/Renderer/Model.h
-    
+    src/Scene/Scene.cpp    
     src/Core/Application.cpp
     src/Core/Log.cpp
-    src/Core/Window.cpp
-    
-    
-    
-   "src/Core/TimeManipulation.h"   "vendor/stb_image/stb_image.cpp" "src/Renderer/Model.cpp")
+    src/Core/Window.cpp  
+    vendor/stb_image/stb_image.cpp 
+    src/Renderer/Model.cpp 
+    src/Renderer/Renderer.cpp
+)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/ImGui)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/assimp)
 
-target_include_directories(Moly PRIVATE 
+target_include_directories(Moly PUBLIC 
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/Core
     ${PROJECT_SOURCE_DIR}/src/Renderer

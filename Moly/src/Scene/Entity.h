@@ -16,17 +16,18 @@ namespace Moly
         using EntityID = std::size_t;
 
     public:
-        Entity(EntityID id) : id(id) {}
+        Entity(std::string _name, EntityID id) : name(_name), id(id) {}
 
-        EntityID getID() const { return id; }
+        EntityID GetID() const { return id; }
+        std::string GetName() const { return name; }
 
         template<typename T>
-        void addComponent(std::shared_ptr<T> component) {
+        void AddComponent(std::shared_ptr<T> component) {
             components[std::type_index(typeid(T))] = component;
         }
 
         template<typename T>
-        std::shared_ptr<T> getComponent() {
+        std::shared_ptr<T> GetComponent() {
             auto it = components.find(std::type_index(typeid(T)));
             if (it != components.end()) {
                 return std::static_pointer_cast<T>(it->second);
@@ -35,6 +36,7 @@ namespace Moly
         }
     private:
         EntityID id;
+        std::string name;
         std::unordered_map<std::type_index, std::shared_ptr<Component>> components;
 
     };
