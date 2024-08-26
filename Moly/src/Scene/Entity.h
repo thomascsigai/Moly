@@ -20,6 +20,10 @@ namespace Moly
 
         EntityID GetID() const { return id; }
         std::string GetName() const { return name; }
+        std::unordered_map<std::type_index, std::shared_ptr<Component>> GetComponents() const
+        {
+            return components;
+        }
 
         template<typename T>
         void AddComponent(std::shared_ptr<T> component) {

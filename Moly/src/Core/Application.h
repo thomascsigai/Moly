@@ -22,6 +22,7 @@ namespace Moly
 		WindowProps windowData = WindowProps();
 
 		void DrawDebugWindow(Scene& scene);
+		void DrawInspectorWindow(std::shared_ptr<Entity>);
 	};
 
 	//To be defined in client

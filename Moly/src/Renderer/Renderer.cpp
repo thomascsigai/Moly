@@ -28,10 +28,14 @@ namespace Moly
 
 				// render the loaded model
 				glm::mat4 model = glm::mat4(1.0f);
-				//model = glm::rotate(model, glm::radians(90.0f) * TimeManipulation::GameTime, glm::vec3(0.0f, 1.0f, 0.0f));
-				model = glm::translate(model, entity->GetComponent<TransformComponent>()->Translation); // translate it down so it's at the center of the scene
-				model = glm::scale(model, entity->GetComponent<TransformComponent>()->Scale);	// it's a bit too big for our scene, so scale it down
+				model = glm::translate(model, entity->GetComponent<TransformComponent>()->Position);
+				model = glm::rotate(model, glm::radians(entity->GetComponent<TransformComponent>()->Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+				model = glm::rotate(model, glm::radians(entity->GetComponent<TransformComponent>()->Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+				model = glm::rotate(model, glm::radians(entity->GetComponent<TransformComponent>()->Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+				model = glm::scale(model, entity->GetComponent<TransformComponent>()->Scale);
 				modelLoadingShader.setMat4("model", model);
+
+
 				modelComponent->model.Draw(modelLoadingShader);
 			}
 		}

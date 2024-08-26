@@ -9,13 +9,16 @@ namespace Moly
 	class MOLY_API Camera
 	{
 	public:
+		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
+	public:
 		Camera() = default;
 		~Camera() = default;
 		
-		float rotAroundValue = 0.0f;
-		float rotUpValue = 1.0f;
-		float distanceFromOrigin = 3.0f;
+		bool lockViewToOrigin = false;
 
-		bool lockView = true;
+	private:
+		ProjectionType m_ProjectionType = ProjectionType::Orthographic;
+
+		float m_PerspectiveFOV = glm::radians(45.0f);
 	};
 }
