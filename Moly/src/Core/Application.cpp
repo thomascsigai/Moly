@@ -27,6 +27,7 @@ namespace Moly
 		auto camera = scene.createEntity("Main Camera");
 		camera->AddComponent(std::make_shared<TransformComponent>());
 		camera->AddComponent(std::make_shared<CameraComponent>());
+		scene.SetPrimaryCam(camera);
 
 		auto entity1 = scene.createEntity("BackPack");
 		entity1->AddComponent(std::make_shared<TransformComponent>());

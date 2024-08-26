@@ -17,10 +17,13 @@ namespace Moly
         Scene(std::string _name = "Default Scene");
         ~Scene() = default;
 
-        std::shared_ptr<Entity> createEntity(std::string name);
+        std::shared_ptr<Entity> primaryCam = nullptr;
 
-        void Update();
+        std::shared_ptr<Entity> createEntity(std::string name);
         std::vector<std::shared_ptr<Entity>> GetEntities() const;
+        
+        void SetPrimaryCam(std::shared_ptr<Entity> _cam);
+        void Update();
 
     private:
         std::string name;

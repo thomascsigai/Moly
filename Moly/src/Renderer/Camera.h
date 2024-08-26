@@ -11,14 +11,22 @@ namespace Moly
 	public:
 		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
 	public:
-		Camera() = default;
+		Camera();
 		~Camera() = default;
+
+		glm::mat4 projection = glm::mat4(1.0f);
 		
 		bool lockViewToOrigin = false;
 
-	private:
-		ProjectionType m_ProjectionType = ProjectionType::Orthographic;
+		ProjectionType projectionType = ProjectionType::Perspective;
 
-		float m_PerspectiveFOV = glm::radians(45.0f);
+		float perspectiveFOV = 45.0f;
+		float perspectiveNear = 0.01f, perspectiveFar = 1000.0f;
+		float aspectRatioW = 1920.0f;
+		float aspectRatioH = 1080.0f;
+
+	private:
+
+		void RecalculateProjection();
 	};
 }

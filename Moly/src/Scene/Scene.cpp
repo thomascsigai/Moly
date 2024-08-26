@@ -8,6 +8,11 @@ namespace Moly
         ML_CORE_INFO("Scene \"{0}\" created", name);
     }
 
+    void Scene::Update()
+    {
+        renderer.render(entities, primaryCam);
+    }
+
     std::shared_ptr<Entity> Scene::createEntity(std::string _name)
     {
         auto entity = std::make_shared<Entity>(_name, nextID++);
@@ -16,9 +21,14 @@ namespace Moly
         return entity;
     }
 
-    void Scene::Update()
+    void Scene::SetPrimaryCam(std::shared_ptr<Entity> _cam)
     {
-        renderer.render(entities);
+        auto component = _cam->GetComponent<CameraComponent>();
+        if (component)
+        {
+            primaryCam = _cam;
+            ML_CORE_INFO("Camera \"{0}\" set as primary cam for \"{1}\"", _cam->GetName(), name);
+        }
     }
 
     std::vector<std::shared_ptr<Entity>> Scene::GetEntities() const

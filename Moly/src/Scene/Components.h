@@ -51,13 +51,13 @@ namespace Moly
 			ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize("							 ").x);
 			ImGui::Text("X"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(50.0f);
-			ImGui::DragFloat("##MyDrag4", &Rotation.x, 0.2f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
+			ImGui::DragFloat("##MyDrag4", &Rotation.x, 0.1f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
 			ImGui::Text("Y"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(50.0f);
-			ImGui::DragFloat("##MyDrag5", &Rotation.y, 0.2f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
+			ImGui::DragFloat("##MyDrag5", &Rotation.y, 0.1f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
 			ImGui::Text("Z"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(50.0f);
-			ImGui::DragFloat("##MyDrag6", &Rotation.z, 0.2f, -1000.0f, 1000.0f, "%.2f");
+			ImGui::DragFloat("##MyDrag6", &Rotation.z, 0.1f, -1000.0f, 1000.0f, "%.2f");
 
 			ImGui::Text("Scale");
 			ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize("							 ").x);
@@ -99,7 +99,7 @@ namespace Moly
 
 		void DrawComponentInInspector() override
 		{
-
+			ImGui::SliderFloat("FOV", &camera.perspectiveFOV, 1.0f, 150.0f);
 		}
 	};
 }

@@ -15,7 +15,7 @@ namespace Moly
 		~Renderer() = default;
 
 
-		void render(const std::vector<std::shared_ptr<Entity>>& entities);
+		void render(const std::vector<std::shared_ptr<Entity>>& entities, std::shared_ptr<Entity> cam);
 
 	private:
 		Shader modelLoadingShader;
