@@ -9,7 +9,7 @@ namespace Moly
 	class MOLY_API Camera
 	{
 	public:
-		enum class ProjectionType { Perspective = 0, Orthographic = 1 };
+		enum class ProjectionType { Perspective, Orthographic };
 	public:
 		Camera();
 		~Camera() = default;
@@ -21,7 +21,7 @@ namespace Moly
 		ProjectionType projectionType = ProjectionType::Perspective;
 
 		float perspectiveFOV = 45.0f;
-		float perspectiveNear = 0.01f, perspectiveFar = 1000.0f;
+		float perspectiveNear = 0.01f, perspectiveFar = 10000.0f;
 		float aspectRatioW = 1920.0f;
 		float aspectRatioH = 1080.0f;
 

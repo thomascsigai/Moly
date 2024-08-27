@@ -25,7 +25,7 @@ namespace Moly
 		Scene scene = Scene();
 		
 		auto camera = scene.createEntity("Main Camera");
-		camera->AddComponent(std::make_shared<TransformComponent>());
+		camera->AddComponent(std::make_shared<TransformComponent>(glm::vec3(0.0f, 0.0f, -10.0f)));
 		camera->AddComponent(std::make_shared<CameraComponent>());
 		scene.SetPrimaryCam(camera);
 

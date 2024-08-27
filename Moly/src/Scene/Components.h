@@ -95,7 +95,8 @@ namespace Moly
 
 		Camera camera;
 
-		CameraComponent() = default;
+		CameraComponent() : camera() 
+		{}
 
 		void DrawComponentInInspector() override
 		{
