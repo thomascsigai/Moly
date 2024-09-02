@@ -10,7 +10,7 @@ namespace Moly
 
     void Scene::Update()
     {
-        if (entities.size() != 0) renderer.render(entities, primaryCam);
+        if (entities.size() != 0) renderer.render(entities, primaryCam, lights);
     }
 
     std::shared_ptr<Entity> Scene::createEntity(std::string _name)
@@ -28,6 +28,16 @@ namespace Moly
         {
             primaryCam = _cam;
             ML_CORE_INFO("Camera \"{0}\" set as primary cam for \"{1}\"", _cam->GetName(), name);
+        }
+    }
+
+    void Scene::AddSceneLight(std::shared_ptr<Entity> _light)
+    {
+        auto component = _light->GetComponent<LightComponent>();
+        if (component)
+        {
+            lights.push_back(_light);
+            ML_CORE_INFO("Light \"{0}\" added to \"{1}\"", _light->GetName(), name);
         }
     }
 

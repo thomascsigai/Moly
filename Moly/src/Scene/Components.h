@@ -86,8 +86,10 @@ namespace Moly
 
 		void DrawComponentInInspector() override
 		{
+			ImGui::Spacing();
 			std::string label = "Model loaded : " + model.directory;
 			ImGui::Text(label.c_str());
+			ImGui::Spacing();
 		}
 	};
 
@@ -103,6 +105,7 @@ namespace Moly
 		void DrawComponentInInspector() override
 		{
 			static int current_perspective = 0;
+			
 			ImGui::Spacing();
 			ImGui::SetNextItemWidth(150.0f);
 			ImGui::Combo("Projection Type", &current_perspective, "Perspective\0Orthographic\0\0");
@@ -139,7 +142,48 @@ namespace Moly
 
 				camera.SetOrthographic(size, nearPlane, farPlane);
 			}
-			//ImGui::SliderFloat("FOV", &camera.perspectiveFOV, 1.0f, 150.0f);
+
+			ImGui::Spacing();
 		}
+	};
+
+	struct MOLY_API LightComponent : public Component
+	{
+		std::string GetName() override { return "Light"; }
+
+		LightComponent() {}
+
+		glm::vec3 color = glm::vec3(1.0f);
+
+		glm::vec3 ambient = glm::vec3(0.1f, 0.1f, 0.1f);
+		glm::vec3 diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
+		glm::vec3 specular = glm::vec3(0.1f, 0.1f, 0.1f);
+
+		void DrawComponentInInspector() override
+		{
+			ImGui::Spacing();
+
+			ImVec4 colorPicked = ImVec4(color.x, color.y, color.z, 1.0f);
+			
+			ImGui::ColorEdit3("Color##1", (float*)&colorPicked);
+			color = glm::vec3(colorPicked.x, colorPicked.y, colorPicked.z);
+			ImGui::Spacing();
+			ImGui::Spacing();
+			
+			ImGui::SliderFloat("Ambient", &ambientFactor, 0.0f, 1.0f, "%.2f");
+			ImGui::SliderFloat("Diffuse", &diffuseFactor, 0.0f, 1.0f, "%.2f");
+			ImGui::SliderFloat("Specular", &specularFactor, 0.0f, 1.0f, "%.2f");
+
+			ambient = color * ambientFactor;
+			diffuse = color * diffuseFactor;
+			specular = color * specularFactor;
+
+			ImGui::Spacing();
+		}
+
+	private:
+		float ambientFactor = 0.1f;
+		float diffuseFactor = 0.5f;
+		float specularFactor = 0.1f;
 	};
 }
