@@ -43,8 +43,6 @@ target_link_libraries(Moly PRIVATE glad glfw ImGui assimp ${OPENGL_LIBRARIES})
 target_compile_definitions(Moly PRIVATE ML_PLATFORM_WINDOWS ML_BUILD_DLL)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-    # Ajoutez des options spécifiques au debug ici
-    message(STATUS "Configuration Debug détectée")
-    # Exemple: définition d'une macro spécifique au debug
+    message(STATUS "Debug configuration detected")
     target_compile_definitions(Moly PRIVATE DEBUG_MODE)
 endif()
