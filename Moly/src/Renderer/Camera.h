@@ -15,18 +15,22 @@ namespace Moly
 		~Camera() = default;
 
 		glm::mat4 projection = glm::mat4(1.0f);
-		
-		bool lockViewToOrigin = false;
 
 		ProjectionType projectionType = ProjectionType::Perspective;
 
+		void SetPerspective(float verticalFOV, float nearClip, float farClip);
+		void SetOrthographic(float size, float nearClip, float farClip);
+
+		void RecalculateProjection();
+
 		float perspectiveFOV = 45.0f;
-		float perspectiveNear = 0.01f, perspectiveFar = 10000.0f;
+		float perspectiveNear = 0.01f, perspectiveFar = 1000.0f;
+		
+		float orthoSize = 10.0f;
+		float orthoNear = -1.0f, orthoFar = 1000.0f;
+		
 		float aspectRatioW = 1920.0f;
 		float aspectRatioH = 1080.0f;
 
-	private:
-
-		void RecalculateProjection();
 	};
 }
