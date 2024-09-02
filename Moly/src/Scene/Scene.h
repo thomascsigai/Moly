@@ -25,12 +25,12 @@ namespace Moly
         void SetPrimaryCam(std::shared_ptr<Entity> _cam);
         void Update();
 
-    private:
+        Entity::EntityID nextID = 0;
         std::string name;
 
         std::vector<std::shared_ptr<Entity>> entities;
-        Entity::EntityID nextID = 0;
         Renderer renderer;
+    private:
 
     };
 }

@@ -41,3 +41,10 @@ find_package(OpenGL REQUIRED)
 target_link_libraries(Moly PRIVATE glad glfw ImGui assimp ${OPENGL_LIBRARIES})
 # Define macros
 target_compile_definitions(Moly PRIVATE ML_PLATFORM_WINDOWS ML_BUILD_DLL)
+
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    # Ajoutez des options spécifiques au debug ici
+    message(STATUS "Configuration Debug détectée")
+    # Exemple: définition d'une macro spécifique au debug
+    target_compile_definitions(Moly PRIVATE DEBUG_MODE)
+endif()

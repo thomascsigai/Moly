@@ -11,6 +11,8 @@ namespace Moly
 
 	Application::Application()
 	{
+		appWindow = new Window(windowData);
+		activeScene = new Scene();
 	}
 
 	Application::~Application()
@@ -19,30 +21,26 @@ namespace Moly
 
 	void Application::Run()
 	{
+		if (activeScene == nullptr)
+		{
+			ML_CORE_ERROR("No active scene found, press a button to quit.");
+			system("pause");
+			return;
+		}
+		OnStart();
+
 		ML_CORE_TRACE("Entering Main Render loop");
-		appWindow = new Window(windowData);
-
-		Scene scene = Scene();
-		
-		auto camera = scene.createEntity("Main Camera");
-		camera->AddComponent(std::make_shared<TransformComponent>(glm::vec3(0.0f, 0.0f, -10.0f)));
-		camera->AddComponent(std::make_shared<CameraComponent>());
-		scene.SetPrimaryCam(camera);
-
-		auto entity1 = scene.createEntity("BackPack");
-		entity1->AddComponent(std::make_shared<TransformComponent>());
-		entity1->AddComponent(std::make_shared<ModelComponent>("resources/models/backpack/backpack.obj"));
-
-		auto entity2 = scene.createEntity("Box");
-		entity2->AddComponent(std::make_shared<TransformComponent>(glm::vec3(1.0f)));
-		entity2->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/Box.obj"));
-
 		while (!appWindow->Should_close())
 		{
 			appWindow->Clear();
-			scene.Update();
+			activeScene->Update();
+			
+			OnUpdate();
+			
+			#if DEBUG_MODE
+				DrawDebugWindow();
+			#endif
 
-			DrawDebugWindow(scene);
 			appWindow->Update();
 		}
 	}
@@ -53,7 +51,7 @@ namespace Moly
 		windowData = _windowData;
 	}
 
-	void Application::DrawDebugWindow(Scene& scene) 
+	void Application::DrawDebugWindow() 
 	{
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
@@ -65,7 +63,7 @@ namespace Moly
 		
 		if (ImGui::CollapsingHeader("Scene Hierarchy", ImGuiTreeNodeFlags_DefaultOpen))
 		{
-			std::vector<std::shared_ptr<Entity>> entities = scene.GetEntities();
+			std::vector<std::shared_ptr<Entity>> entities = activeScene->GetEntities();
 			
 			for (int i = 0; i < entities.size(); i++)
 			{

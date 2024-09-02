@@ -10,7 +10,7 @@ namespace Moly
 
     void Scene::Update()
     {
-        renderer.render(entities, primaryCam);
+        if (entities.size() != 0) renderer.render(entities, primaryCam);
     }
 
     std::shared_ptr<Entity> Scene::createEntity(std::string _name)

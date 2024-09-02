@@ -17,12 +17,19 @@ namespace Moly
 
 		void Run();
 		void SetWindowData(std::string Title, uint32_t width, uint32_t height, bool VSync);
+		
+	protected:
+		Scene* activeScene = nullptr;
+
 	private:
 		Window* appWindow = nullptr;
 		WindowProps windowData = WindowProps();
 
-		void DrawDebugWindow(Scene& scene);
+		void DrawDebugWindow();
 		void DrawInspectorWindow(std::shared_ptr<Entity>);
+
+		virtual void OnUpdate() {}
+		virtual void OnStart() {}
 	};
 
 	//To be defined in client
