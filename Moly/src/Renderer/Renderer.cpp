@@ -42,6 +42,10 @@ namespace Moly
 					currentShader->setVec3("light.diffuse", light1Component->diffuse);
 					currentShader->setVec3("light.specular", light1Component->specular);
 
+					currentShader->setFloat("light.constant", 1.0f);
+					currentShader->setFloat("light.linear", 0.09f);
+					currentShader->setFloat("light.quadratic", 0.032f);
+
 					// material properties
 					currentShader->setFloat("material.shininess", 64.0f);
 				}

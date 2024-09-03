@@ -27,12 +27,16 @@ namespace Moly
 			activeScene->SetPrimaryCam(camera);
 
 			auto entity1 = activeScene->createEntity("Cat");
-			entity1->AddComponent(std::make_shared<TransformComponent>(glm::vec3(2.0f, -1.0f, -10.0f)));
+			entity1->AddComponent(std::make_shared<TransformComponent>(glm::vec3(2.0f, -1.0f, -15.0f)));
 			entity1->AddComponent(std::make_shared<ModelComponent>("resources/models/cat/cat.obj"));
 			
 			auto entity2 = activeScene->createEntity("Backpack");
-			entity2->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-2.0f, 0.0f, -10.0f)));
+			entity2->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-2.0f, 0.0f, -15.0f)));
 			entity2->AddComponent(std::make_shared<ModelComponent>("resources/models/backpack/backpack.obj"));
+			
+			auto entity3 = activeScene->createEntity("Sponza");
+			entity3->AddComponent(std::make_shared<TransformComponent>(glm::vec3(0.0f, -2.0f, -5.0f)));
+			entity3->AddComponent(std::make_shared<ModelComponent>("resources/models/Sponza/sponza.obj"));
 
 			auto light1 = activeScene->createEntity("Light1");
 			light1->AddComponent(std::make_shared<TransformComponent>(glm::vec3(2.0f, 1.0f, -5.0f)));

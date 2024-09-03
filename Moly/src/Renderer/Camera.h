@@ -23,7 +23,7 @@ namespace Moly
 
 		void RecalculateProjection();
 
-		float perspectiveFOV = 45.0f;
+		float perspectiveFOV = 70.0f;
 		float perspectiveNear = 0.1f, perspectiveFar = 1000.0f;
 		
 		float orthoSize = 10.0f;
