@@ -149,13 +149,25 @@ namespace Moly
 		}
 	};
 
+	enum LightType
+	{
+		PointLight = 0,
+		DirectionnalLight = 1,
+		SpotLight = 2
+	};
+
 	struct MOLY_API LightComponent : public Component
 	{
 		std::string GetName() override { return "Light"; }
 
 		LightComponent() {}
+		LightComponent(LightType _lightType) : type(_lightType) {}
 
 		glm::vec3 color = glm::vec3(1.0f);
+
+		LightType type = LightType::PointLight;
+
+		glm::vec3 direction = glm::vec3(-0.2f, -1.0f, -0.3f);
 
 		glm::vec3 ambient = glm::vec3(0.1f, 0.1f, 0.1f);
 		glm::vec3 diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
@@ -163,11 +175,25 @@ namespace Moly
 
 		void DrawComponentInInspector() override
 		{
+			int light_type = type;
+
 			ImGui::Spacing();
+			ImGui::SetNextItemWidth(195.0f);
+			ImGui::Combo("Type", &light_type, "Point Light\0Directionnal Light\0Spot Light\0\0");
+			
+			if (light_type == 0) type = LightType::PointLight;
+			if (light_type == 1)
+			{
+				type = LightType::DirectionnalLight;
+				float dir[3] = { direction.x, direction.y, direction.z };
+				ImGui::DragFloat3("Direction", dir, 0.01f, -1000.0f, 1000.0f, "%.2f");
+				direction = glm::vec3(dir[0], dir[1], dir[2]);
+			}
+			if (light_type == 2) type = LightType::SpotLight;
 
 			ImVec4 colorPicked = ImVec4(color.x, color.y, color.z, 1.0f);
 			
-			ImGui::ColorEdit3("Color##1", (float*)&colorPicked);
+			ImGui::ColorEdit3("Color", (float*)&colorPicked);
 			color = glm::vec3(colorPicked.x, colorPicked.y, colorPicked.z);
 			ImGui::Spacing();
 			ImGui::Spacing();

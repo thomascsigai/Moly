@@ -38,11 +38,22 @@ namespace Moly
 			entity3->AddComponent(std::make_shared<TransformComponent>(glm::vec3(0.0f, -2.0f, -5.0f)));
 			entity3->AddComponent(std::make_shared<ModelComponent>("resources/models/Sponza/sponza.obj"));
 
-			auto light1 = activeScene->createEntity("Light1");
+			auto lightDir = activeScene->createEntity("Directionnal Light");
+			lightDir->AddComponent(std::make_shared<TransformComponent>(glm::vec3(0.0f, 10.0f, 0.0f)));
+			lightDir->AddComponent(std::make_shared<LightComponent>(LightType::DirectionnalLight));
+			activeScene->AddSceneLight(lightDir);
+
+			auto light1 = activeScene->createEntity("PointLight1");
 			light1->AddComponent(std::make_shared<TransformComponent>(glm::vec3(2.0f, 1.0f, -5.0f)));
 			light1->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
-			light1->AddComponent(std::make_shared<LightComponent>());
+			light1->AddComponent(std::make_shared<LightComponent>(LightType::PointLight));
 			activeScene->AddSceneLight(light1);
+			
+			auto light2 = activeScene->createEntity("PointLight2");
+			light2->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-2.0f, 1.0f, -5.0f)));
+			light2->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
+			light2->AddComponent(std::make_shared<LightComponent>());
+			activeScene->AddSceneLight(light2);
 		}
 
 		void OnUpdate() override

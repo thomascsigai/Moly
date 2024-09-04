@@ -10,7 +10,7 @@ namespace Moly
 
     void Scene::Update()
     {
-        if (entities.size() != 0) renderer.render(entities, primaryCam, lights);
+        if (entities.size() != 0) renderer.Render(entities, primaryCam, lights);
     }
 
     std::shared_ptr<Entity> Scene::createEntity(std::string _name)
@@ -33,12 +33,9 @@ namespace Moly
 
     void Scene::AddSceneLight(std::shared_ptr<Entity> _light)
     {
-        auto component = _light->GetComponent<LightComponent>();
-        if (component)
-        {
-            lights.push_back(_light);
-            ML_CORE_INFO("Light \"{0}\" added to \"{1}\"", _light->GetName(), name);
-        }
+        if (!_light) return;
+        lights.push_back(_light);
+        ML_CORE_INFO("Light \"{0}\" added to \"{1}\"", _light->GetName(), name);
     }
 
     std::vector<std::shared_ptr<Entity>> Scene::GetEntities() const

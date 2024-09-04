@@ -26,14 +26,17 @@ namespace Moly
         }
 
         template<typename T>
-        void AddComponent(std::shared_ptr<T> component) {
+        void AddComponent(std::shared_ptr<T> component) 
+        {
             components[std::type_index(typeid(T))] = component;
         }
 
         template<typename T>
-        std::shared_ptr<T> GetComponent() {
+        std::shared_ptr<T> GetComponent() 
+        {
             auto it = components.find(std::type_index(typeid(T)));
-            if (it != components.end()) {
+            if (it != components.end())
+            {
                 return std::static_pointer_cast<T>(it->second);
             }
             return nullptr;

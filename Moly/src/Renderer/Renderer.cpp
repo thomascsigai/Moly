@@ -10,13 +10,20 @@ namespace Moly
 		lightShader("resources/shaders/light.vert", "resources/shaders/light.frag")
 	{}
 
-	void Renderer::render(const std::vector<std::shared_ptr<Entity>>& entities, const std::shared_ptr<Entity> cam,
+	void Renderer::ResetLighting(Shader& shader)
+	{
+		glm::vec3 zero = glm::vec3(0.0f);
+		shader.setVec3("dirLight.direction", zero);
+		shader.setVec3("dirLight.ambient", zero);
+		shader.setVec3("dirLight.diffuse", zero);
+		shader.setVec3("dirLight.specular", zero);
+	}
+
+	void Renderer::Render(const std::vector<std::shared_ptr<Entity>>& entities, const std::shared_ptr<Entity> cam,
 		const std::vector<std::shared_ptr<Entity>>& lights)
 	{
 		std::shared_ptr<TransformComponent> camTransform = cam->GetComponent<TransformComponent>();
 		std::shared_ptr<CameraComponent> camComponent = cam->GetComponent<CameraComponent>();
-
-		std::shared_ptr<LightComponent> light1Component = lights.at(0)->GetComponent<LightComponent>();
 
 		for (const auto& entity : entities)
 		{
@@ -34,20 +41,40 @@ namespace Moly
 
 				if (!lightComponent)
 				{
-					currentShader->setVec3("light.position", lights.at(0)->GetComponent<TransformComponent>()->Position);
+					uint32_t pointLightCount = 0;
+
+					currentShader->setFloat("material.shininess", 64.0f);
 					currentShader->setVec3("viewPos", camTransform->Position);
 
-					// light properties
-					currentShader->setVec3("light.ambient", light1Component->ambient);
-					currentShader->setVec3("light.diffuse", light1Component->diffuse);
-					currentShader->setVec3("light.specular", light1Component->specular);
+					//ResetLighting(*currentShader);
 
-					currentShader->setFloat("light.constant", 1.0f);
-					currentShader->setFloat("light.linear", 0.09f);
-					currentShader->setFloat("light.quadratic", 0.032f);
+					for (int i = 0; i < lights.size(); i++)
+					{
+						auto light = lights[i]->GetComponent<LightComponent>();
+						auto lightTransform = lights[i]->GetComponent<TransformComponent>();
 
-					// material properties
-					currentShader->setFloat("material.shininess", 64.0f);
+						if (light->type == LightType::DirectionnalLight)
+						{
+							currentShader->setVec3("dirLight.direction", light->direction);
+							currentShader->setVec3("dirLight.ambient", light->ambient);
+							currentShader->setVec3("dirLight.diffuse", light->diffuse);
+							currentShader->setVec3("dirLight.specular", light->specular);
+						}
+						else if (light->type == LightType::PointLight)
+						{
+							currentShader->setVec3("pointLights[" + std::to_string(pointLightCount) +"].position", lightTransform->Position);
+							currentShader->setVec3("pointLights[" + std::to_string(pointLightCount) +"].ambient", light->ambient);
+							currentShader->setVec3("pointLights[" + std::to_string(pointLightCount) +"].diffuse", light->diffuse);
+							currentShader->setVec3("pointLights[" + std::to_string(pointLightCount) +"].specular", light->specular);
+							currentShader->setFloat("pointLights[" + std::to_string(pointLightCount) +"].constant", 1.0f);
+							currentShader->setFloat("pointLights[" + std::to_string(pointLightCount) +"].linear", 0.09f);
+							currentShader->setFloat("pointLights[" + std::to_string(pointLightCount) +"].quadratic", 0.032f);
+
+							pointLightCount++;
+						}
+					}
+
+					currentShader->setInt("NB_POINT_LIGHTS", pointLightCount);
 				}
 				else
 				{
