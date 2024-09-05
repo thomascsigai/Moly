@@ -52,8 +52,14 @@ namespace Moly
 			auto light2 = activeScene->createEntity("PointLight2");
 			light2->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-2.0f, 1.0f, -5.0f)));
 			light2->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
-			light2->AddComponent(std::make_shared<LightComponent>());
+			light2->AddComponent(std::make_shared<LightComponent>(LightType::PointLight));
 			activeScene->AddSceneLight(light2);
+			
+			auto spotlight = activeScene->createEntity("Spotlight");
+			spotlight->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-5.0f, 1.0f, -5.0f)));
+			spotlight->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
+			spotlight->AddComponent(std::make_shared<LightComponent>(LightType::SpotLight));
+			activeScene->AddSceneLight(spotlight);
 		}
 
 		void OnUpdate() override
@@ -67,7 +73,7 @@ namespace Moly
 	{
 		ML_CLIENT_TRACE("Initializing Sandbox App");
 		Sandbox* sandbox = new Sandbox();
-		sandbox->SetWindowData("Sandbox", 1600, 900, true);
+		sandbox->SetWindowData("Sandbox", 1920, 1080, true);
 
 		return sandbox;
 	}

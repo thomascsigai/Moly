@@ -72,6 +72,19 @@ namespace Moly
 
 							pointLightCount++;
 						}
+						else if (light->type == LightType::SpotLight)
+						{
+							currentShader->setVec3("spotLight.position", lightTransform->Position);
+							currentShader->setVec3("spotLight.direction", light->direction);
+							currentShader->setVec3("spotLight.ambient", light->ambient);
+							currentShader->setVec3("spotLight.diffuse", light->diffuse);
+							currentShader->setVec3("spotLight.specular", light->specular);
+							currentShader->setFloat("spotLight.constant", 1.0f);
+							currentShader->setFloat("spotLight.linear", 0.09f);
+							currentShader->setFloat("spotLight.quadratic", 0.032f);
+							currentShader->setFloat("spotLight.cutOff", glm::cos(glm::radians(light->cutOff)));
+							currentShader->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(light->outerCutOff)));
+						}
 					}
 
 					currentShader->setInt("NB_POINT_LIGHTS", pointLightCount);

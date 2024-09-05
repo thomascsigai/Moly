@@ -169,6 +169,9 @@ namespace Moly
 
 		glm::vec3 direction = glm::vec3(-0.2f, -1.0f, -0.3f);
 
+		float cutOff = 12.5f;
+		float outerCutOff = 15.0f;
+
 		glm::vec3 ambient = glm::vec3(0.1f, 0.1f, 0.1f);
 		glm::vec3 diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
 		glm::vec3 specular = glm::vec3(0.1f, 0.1f, 0.1f);
@@ -189,7 +192,15 @@ namespace Moly
 				ImGui::DragFloat3("Direction", dir, 0.01f, -1000.0f, 1000.0f, "%.2f");
 				direction = glm::vec3(dir[0], dir[1], dir[2]);
 			}
-			if (light_type == 2) type = LightType::SpotLight;
+			if (light_type == 2)
+			{
+				type = LightType::SpotLight;
+				float dir[3] = { direction.x, direction.y, direction.z };
+				ImGui::DragFloat3("Direction", dir, 0.01f, -1000.0f, 1000.0f, "%.2f");
+				direction = glm::vec3(dir[0], dir[1], dir[2]);
+				ImGui::SliderFloat("CutOff", &cutOff, 0.0f, 40.0f, "%.2f");
+				ImGui::SliderFloat("OuterCutOff", &outerCutOff, 0.0f, 40.0f, "%.2f");
+			}
 
 			ImVec4 colorPicked = ImVec4(color.x, color.y, color.z, 1.0f);
 			
