@@ -28,8 +28,8 @@ namespace Moly
             if (InputProcessing::A_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(-camTransform->Right * camSpeed);
             if (InputProcessing::S_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(-camTransform->Front * camSpeed);
             if (InputProcessing::D_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(camTransform->Right * camSpeed);
-            if (InputProcessing::Q_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(camTransform->Up * camSpeed);
-            if (InputProcessing::E_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(-camTransform->Up * camSpeed);
+            if (InputProcessing::Q_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(camTransform->WorldUp * camSpeed);
+            if (InputProcessing::E_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(-camTransform->WorldUp * camSpeed);
 
             camSpeed = 100.0f * TimeManipulation::DeltaTime;
 			if (InputProcessing::UP_PRESSED) primaryCam->GetComponent<TransformComponent>()->Rotate(-camSpeed, 0.0f, 0.0f);

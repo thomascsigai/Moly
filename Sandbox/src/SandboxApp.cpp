@@ -44,16 +44,32 @@ namespace Moly
 			activeScene->AddSceneLight(lightDir);
 
 			auto light1 = activeScene->createEntity("PointLight1");
-			light1->AddComponent(std::make_shared<TransformComponent>(glm::vec3(2.0f, 1.0f, -5.0f)));
+			light1->AddComponent(std::make_shared<TransformComponent>(glm::vec3(25.8f, 4.8f, -16.67f)));
 			light1->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
 			light1->AddComponent(std::make_shared<LightComponent>(LightType::PointLight));
+			light1->GetComponent<LightComponent>()->color = glm::vec3(0.98f, 0.61f, 0.2f);
 			activeScene->AddSceneLight(light1);
 			
 			auto light2 = activeScene->createEntity("PointLight2");
-			light2->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-2.0f, 1.0f, -5.0f)));
+			light2->AddComponent(std::make_shared<TransformComponent>(glm::vec3(25.8f, 4.8f, 2.61f)));
 			light2->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
 			light2->AddComponent(std::make_shared<LightComponent>(LightType::PointLight));
+			light2->GetComponent<LightComponent>()->color = glm::vec3(0.98f, 0.61f, 0.2f);
 			activeScene->AddSceneLight(light2);
+			
+			auto light3 = activeScene->createEntity("PointLight3");
+			light3->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-32.95f, 4.8f, 2.61f)));
+			light3->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
+			light3->AddComponent(std::make_shared<LightComponent>(LightType::PointLight));
+			light3->GetComponent<LightComponent>()->color = glm::vec3(0.98f, 0.61f, 0.2f);
+			activeScene->AddSceneLight(light3);
+			
+			auto light4 = activeScene->createEntity("PointLight4");
+			light4->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-32.95f, 4.8f, -16.63f)));
+			light4->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
+			light4->AddComponent(std::make_shared<LightComponent>(LightType::PointLight));
+			light4->GetComponent<LightComponent>()->color = glm::vec3(0.98f, 0.61f, 0.2f);
+			activeScene->AddSceneLight(light4);
 			
 			auto spotlight = activeScene->createEntity("Spotlight");
 			spotlight->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-5.0f, 1.0f, -5.0f)));

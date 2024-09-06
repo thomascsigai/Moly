@@ -67,7 +67,6 @@ namespace Moly
 			front.y = sin(glm::radians(Rotation.x));
 			front.z = sin(glm::radians(Rotation.y + 90)) * cos(glm::radians(Rotation.x));
 			Front = glm::normalize(front);
-			std::cout << Front.x << " " << Front.y << " " << Front.z << std::endl;
 ;			// also re-calculate the Right and Up vector
 			Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
 			Up = glm::normalize(glm::cross(Right, Front));
@@ -220,9 +219,9 @@ namespace Moly
 		float cutOff = 12.5f;
 		float outerCutOff = 15.0f;
 
-		glm::vec3 ambient = glm::vec3(0.1f, 0.1f, 0.1f);
-		glm::vec3 diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
-		glm::vec3 specular = glm::vec3(0.1f, 0.1f, 0.1f);
+		glm::vec3 ambient = glm::vec3(0.5f, 0.5f, 0.5f);
+		glm::vec3 diffuse = glm::vec3(0.7f, 0.7f, 0.7f);
+		glm::vec3 specular = glm::vec3(0.4f, 0.4f, 0.4f);
 
 		void DrawComponentInInspector() override
 		{
@@ -269,8 +268,8 @@ namespace Moly
 		}
 
 	private:
-		float ambientFactor = 0.1f;
-		float diffuseFactor = 0.5f;
-		float specularFactor = 0.1f;
+		float ambientFactor = 0.5f;
+		float diffuseFactor = 0.7f;
+		float specularFactor = 0.4f;
 	};
 }
