@@ -7,6 +7,8 @@
 #include <Camera.h>
 #include <Model.h>
 
+#include <iostream>
+
 namespace Moly
 {
 	struct MOLY_API Component
@@ -37,6 +39,39 @@ namespace Moly
 		TransformComponent(const glm::vec3& position)
 			: Position(position) {}
 
+		// Translate the transform by a given translation vector
+		void Translate(glm::vec3 translation)
+		{
+			Position += translation;
+		}
+
+		// Rotate the transform by a given vec3 rotation vector
+		void Rotate(glm::vec3 rotation)
+		{
+			Rotation += rotation;
+			UpdateCameraVectors();
+		}
+		
+		void Rotate(float Rx, float Ry, float Rz)
+		{
+			Rotation += glm::vec3(Rx, Ry, Rz);
+			UpdateCameraVectors();
+		}
+
+		// Update the Front, Right and Up vectors using the updated Euler angles
+		void UpdateCameraVectors()
+		{
+			// calculate the new Front vector
+			glm::vec3 front;
+			front.x = cos(glm::radians(Rotation.y + 90)) * cos(glm::radians(Rotation.x));
+			front.y = sin(glm::radians(Rotation.x));
+			front.z = sin(glm::radians(Rotation.y + 90)) * cos(glm::radians(Rotation.x));
+			Front = glm::normalize(front);
+			std::cout << Front.x << " " << Front.y << " " << Front.z << std::endl;
+;			// also re-calculate the Right and Up vector
+			Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+			Up = glm::normalize(glm::cross(Right, Front));
+		}
 
 		void DrawComponentInInspector() override
 		{
@@ -79,23 +114,6 @@ namespace Moly
 			ImGui::Spacing();
 		}
 
-		void Translate(glm::vec3 translation)
-		{
-			Position += translation;
-		}
-
-		void updateCameraVectors()
-		{
-			// calculate the new Front vector
-			glm::vec3 front;
-			front.x = cos(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
-			front.y = sin(glm::radians(Rotation.x));
-			front.z = sin(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
-			Front = glm::normalize(front);
-			// also re-calculate the Right and Up vector
-			Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
-			Up = glm::normalize(glm::cross(Right, Front));
-		}
 	};
 
 	struct MOLY_API ModelComponent : public Component
@@ -120,7 +138,7 @@ namespace Moly
 	{
 		std::string GetName() override { return "Camera"; }
 		
-		float freeCamSpeed = 5.0f;
+		float freeCamSpeed = 10.0f;
 
 		Camera camera;
 
