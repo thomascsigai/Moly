@@ -1,4 +1,6 @@
 #include <Scene.h>
+#include <InputProcessing.h>
+#include <TimeManipulation.h>
 
 namespace Moly
 {
@@ -10,7 +12,23 @@ namespace Moly
 
     void Scene::Update()
     {
+        ProcessCameraMovements();
         if (entities.size() != 0) renderer.Render(entities, primaryCam, lights);
+    }
+
+    void Scene::ProcessCameraMovements()
+    {
+		auto camTransform = primaryCam->GetComponent<TransformComponent>();
+        
+        if (primaryCam && camTransform)
+        {
+			float camSpeed = primaryCam->GetComponent<CameraComponent>()->freeCamSpeed * TimeManipulation::DeltaTime;
+
+            if (InputProcessing::W_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(camTransform->Front * camSpeed);
+            if (InputProcessing::A_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(-camTransform->Right * camSpeed);
+            if (InputProcessing::S_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(-camTransform->Front * camSpeed);
+            if (InputProcessing::D_PRESSED) primaryCam->GetComponent<TransformComponent>()->Translate(camTransform->Right * camSpeed);
+        }
     }
 
     std::shared_ptr<Entity> Scene::createEntity(std::string _name)

@@ -9,7 +9,7 @@ add_library(Moly SHARED
     vendor/stb_image/stb_image.cpp 
     src/Renderer/Model.cpp 
     src/Renderer/Renderer.cpp
- "src/Renderer/Camera.cpp")
+ "src/Renderer/Camera.cpp" "src/Core/InputProcessing.h" "src/Core/InputProcessing.cpp")
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)

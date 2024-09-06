@@ -27,6 +27,11 @@ namespace Moly
 		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 
+		glm::vec3 Front = glm::vec3(0.0f, 0.0f, 1.0f);
+		glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 Right = glm::vec3(-1.0f, 0.0f, 0.0f);
+		glm::vec3 WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
 		TransformComponent(const glm::vec3& position)
@@ -73,6 +78,24 @@ namespace Moly
 			ImGui::DragFloat("##MyDrag9", &Scale.z, 0.01f, -1000.0f, 1000.0f, "%.2f");
 			ImGui::Spacing();
 		}
+
+		void Translate(glm::vec3 translation)
+		{
+			Position += translation;
+		}
+
+		void updateCameraVectors()
+		{
+			// calculate the new Front vector
+			glm::vec3 front;
+			front.x = cos(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
+			front.y = sin(glm::radians(Rotation.x));
+			front.z = sin(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
+			Front = glm::normalize(front);
+			// also re-calculate the Right and Up vector
+			Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+			Up = glm::normalize(glm::cross(Right, Front));
+		}
 	};
 
 	struct MOLY_API ModelComponent : public Component
@@ -96,6 +119,8 @@ namespace Moly
 	struct MOLY_API CameraComponent : public Component
 	{
 		std::string GetName() override { return "Camera"; }
+		
+		float freeCamSpeed = 5.0f;
 
 		Camera camera;
 
@@ -144,6 +169,11 @@ namespace Moly
 
 				camera.SetOrthographic(size, nearPlane, farPlane);
 			}
+
+			ImGui::Spacing();
+			ImGui::Spacing();
+			ImGui::SetNextItemWidth(200.0f);
+			ImGui::SliderFloat("Free Cam Speed", &freeCamSpeed, 0.1f, 20.0f, "%.1f");
 
 			ImGui::Spacing();
 		}

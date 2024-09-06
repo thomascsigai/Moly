@@ -1,5 +1,6 @@
 #include <Window.h>
 #include <TimeManipulation.h>
+#include <InputProcessing.h>
 
 namespace Moly
 {
@@ -67,6 +68,7 @@ namespace Moly
 
         glViewport(0, 0, windowData.Width, windowData.Height);
         glfwSetFramebufferSizeCallback(windowGLFW, framebuffer_size_callback);
+		glfwSetKeyCallback(windowGLFW, InputProcessing::ProcessInput);
         glfwSetWindowUserPointer(windowGLFW, &windowData);
         glfwSetWindowPos(windowGLFW, 100, 100);
 

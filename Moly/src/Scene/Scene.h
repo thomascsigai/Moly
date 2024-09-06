@@ -35,5 +35,7 @@ namespace Moly
         
         Renderer renderer;
 
+        void ProcessCameraMovements();
+
     };
 }
