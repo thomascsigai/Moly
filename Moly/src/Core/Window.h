@@ -23,8 +23,8 @@ namespace Moly {
 		bool VSync;
 
 		WindowProps(const std::string& title = "Moly Engine",
-			uint32_t width = 1600,
-			uint32_t height = 900,
+			uint32_t width = 1920,
+			uint32_t height = 1080,
 			bool VSync = true)
 			: Title(title), Width(width), Height(height), VSync(VSync)
 		{
