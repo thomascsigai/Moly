@@ -11,8 +11,6 @@ namespace Moly
 
 	Application::Application()
 	{
-		appWindow = new Window(windowData);
-		activeScene = new Scene();
 	}
 
 	Application::~Application()
@@ -21,6 +19,9 @@ namespace Moly
 
 	void Application::Run()
 	{
+		appWindow = new Window(windowData);
+		activeScene = new Scene();
+
 		if (activeScene == nullptr)
 		{
 			ML_CORE_ERROR("No active scene found, press a button to quit.");
@@ -60,9 +61,18 @@ namespace Moly
 		ImGui::Begin(windowData.Title.c_str());
 
 		static std::shared_ptr<Entity> selectedEntity = nullptr;
+
+
+		if (ImGui::CollapsingHeader("Rendering"))
+		{
+			ImGui::Spacing();
+			ImGui::SliderFloat("Gamma", &activeScene->GetRenderer()->gamma, 0.0f, 5.0f, "%.1f");
+			ImGui::Spacing();
+		}
 		
 		if (ImGui::CollapsingHeader("Scene Hierarchy", ImGuiTreeNodeFlags_DefaultOpen))
 		{
+			ImGui::Spacing();
 			std::vector<std::shared_ptr<Entity>> entities = activeScene->GetEntities();
 			
 			for (int i = 0; i < entities.size(); i++)
@@ -71,11 +81,12 @@ namespace Moly
 				if (ImGui::Selectable(entities[i]->GetName().c_str(), selectedEntity == entities[i], ImGuiSelectableFlags_SpanAllColumns))
 					selectedEntity = entities[i];
 			}
+			ImGui::Spacing();
 		}
 
 		if (ImGui::CollapsingHeader("Performance"))
 		{
-
+			ImGui::Spacing();
 			fpsSamples[currentSampleIndex] = ImGui::GetIO().Framerate;
 			currentSampleIndex = (currentSampleIndex + 1) % MAX_FPS_SAMPLES;
 
@@ -92,6 +103,7 @@ namespace Moly
 			appWindow->SetVSync(VSync);
 			
 			ImGui::NewLine();
+			ImGui::Spacing();
 		}
 
 		ImGui::End();

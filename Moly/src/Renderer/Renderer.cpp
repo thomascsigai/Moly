@@ -42,11 +42,11 @@ namespace Moly
 				if (!lightComponent)
 				{
 					uint32_t pointLightCount = 0;
+					uint32_t spotLightCount = 0;
 
-					currentShader->setFloat("material.shininess", 64.0f);
+					currentShader->setFloat("material.shininess", 100.0f);
+					currentShader->setFloat("gamma", gamma);
 					currentShader->setVec3("viewPos", camTransform->Position);
-
-					//ResetLighting(*currentShader);
 
 					for (int i = 0; i < lights.size(); i++)
 					{
@@ -67,27 +67,30 @@ namespace Moly
 							currentShader->setVec3("pointLights[" + std::to_string(pointLightCount) +"].diffuse", light->diffuse);
 							currentShader->setVec3("pointLights[" + std::to_string(pointLightCount) +"].specular", light->specular);
 							currentShader->setFloat("pointLights[" + std::to_string(pointLightCount) +"].constant", 1.0f);
-							currentShader->setFloat("pointLights[" + std::to_string(pointLightCount) +"].linear", 0.09f);
-							currentShader->setFloat("pointLights[" + std::to_string(pointLightCount) +"].quadratic", 0.032f);
+							currentShader->setFloat("pointLights[" + std::to_string(pointLightCount) +"].linear", 0.07f);
+							currentShader->setFloat("pointLights[" + std::to_string(pointLightCount) +"].quadratic", 0.017f);
 
 							pointLightCount++;
 						}
 						else if (light->type == LightType::SpotLight)
 						{
-							currentShader->setVec3("spotLight.position", lightTransform->Position);
-							currentShader->setVec3("spotLight.direction", light->direction);
-							currentShader->setVec3("spotLight.ambient", light->ambient);
-							currentShader->setVec3("spotLight.diffuse", light->diffuse);
-							currentShader->setVec3("spotLight.specular", light->specular);
-							currentShader->setFloat("spotLight.constant", 1.0f);
-							currentShader->setFloat("spotLight.linear", 0.09f);
-							currentShader->setFloat("spotLight.quadratic", 0.032f);
-							currentShader->setFloat("spotLight.cutOff", glm::cos(glm::radians(light->cutOff)));
-							currentShader->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(light->outerCutOff)));
+							currentShader->setVec3("spotLights[" + std::to_string(spotLightCount) + "].position", lightTransform->Position);
+							currentShader->setVec3("spotLights[" + std::to_string(spotLightCount) + "].direction", light->direction);
+							currentShader->setVec3("spotLights[" + std::to_string(spotLightCount) + "].ambient", light->ambient);
+							currentShader->setVec3("spotLights[" + std::to_string(spotLightCount) + "].diffuse", light->diffuse);
+							currentShader->setVec3("spotLights[" + std::to_string(spotLightCount) + "].specular", light->specular);
+							currentShader->setFloat("spotLights[" + std::to_string(spotLightCount) + "].constant", 1.0f);
+							currentShader->setFloat("spotLights[" + std::to_string(spotLightCount) + "].linear", 0.07f);
+							currentShader->setFloat("spotLights[" + std::to_string(spotLightCount) + "].quadratic", 0.017f);
+							currentShader->setFloat("spotLights[" + std::to_string(spotLightCount) + "].cutOff", glm::cos(glm::radians(light->cutOff)));
+							currentShader->setFloat("spotLights[" + std::to_string(spotLightCount) + "].outerCutOff", glm::cos(glm::radians(light->outerCutOff)));
+
+							spotLightCount++;
 						}
 					}
 
 					currentShader->setInt("NB_POINT_LIGHTS", pointLightCount);
+					currentShader->setInt("NB_SPOT_LIGHTS", spotLightCount);
 				}
 				else
 				{

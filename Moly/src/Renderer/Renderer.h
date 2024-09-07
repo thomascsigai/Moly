@@ -18,10 +18,13 @@ namespace Moly
 		void Render(const std::vector<std::shared_ptr<Entity>>& entities, const std::shared_ptr<Entity> cam,
 			const std::vector<std::shared_ptr<Entity>>& lights);
 
+		float gamma = 2.2f;
+	
 	private:
 		Shader modelLoadingShader;
 		Shader lightShader;
 
 		void ResetLighting(Shader& shader);
+
 	};
 }

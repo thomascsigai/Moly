@@ -219,9 +219,9 @@ namespace Moly
 		float cutOff = 12.5f;
 		float outerCutOff = 15.0f;
 
-		glm::vec3 ambient = glm::vec3(0.5f, 0.5f, 0.5f);
-		glm::vec3 diffuse = glm::vec3(0.7f, 0.7f, 0.7f);
-		glm::vec3 specular = glm::vec3(0.4f, 0.4f, 0.4f);
+		glm::vec3 ambient = glm::vec3(0.22);
+		glm::vec3 diffuse = glm::vec3(0.3f);
+		glm::vec3 specular = glm::vec3(0.75f);
 
 		void DrawComponentInInspector() override
 		{
@@ -268,8 +268,8 @@ namespace Moly
 		}
 
 	private:
-		float ambientFactor = 0.5f;
-		float diffuseFactor = 0.7f;
-		float specularFactor = 0.4f;
+		float ambientFactor = 0.22f;
+		float diffuseFactor = 0.3f;
+		float specularFactor = 0.75f;
 	};
 }

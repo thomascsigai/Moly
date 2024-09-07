@@ -70,12 +70,6 @@ namespace Moly
 			light4->AddComponent(std::make_shared<LightComponent>(LightType::PointLight));
 			light4->GetComponent<LightComponent>()->color = glm::vec3(0.98f, 0.61f, 0.2f);
 			activeScene->AddSceneLight(light4);
-			
-			auto spotlight = activeScene->createEntity("Spotlight");
-			spotlight->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-5.0f, 1.0f, -5.0f)));
-			spotlight->AddComponent(std::make_shared<ModelComponent>("resources/models/OBJ/box.obj"));
-			spotlight->AddComponent(std::make_shared<LightComponent>(LightType::SpotLight));
-			activeScene->AddSceneLight(spotlight);
 		}
 
 		void OnUpdate() override
@@ -89,7 +83,7 @@ namespace Moly
 	{
 		ML_CLIENT_TRACE("Initializing Sandbox App");
 		Sandbox* sandbox = new Sandbox();
-		sandbox->SetWindowData("Sandbox", 1920, 1080, true);
+		sandbox->SetWindowData("Sandbox", 1600, 900, true);
 
 		return sandbox;
 	}

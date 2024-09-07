@@ -21,6 +21,8 @@ namespace Moly
 
         std::shared_ptr<Entity> createEntity(std::string name);
         std::vector<std::shared_ptr<Entity>> GetEntities() const;
+
+        Renderer* GetRenderer() { return &renderer; }
         
         void SetPrimaryCam(std::shared_ptr<Entity> _cam);
         void AddSceneLight(std::shared_ptr<Entity> _light);
