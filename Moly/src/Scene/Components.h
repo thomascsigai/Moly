@@ -29,10 +29,10 @@ namespace Moly
 		glm::vec3 Rotation = { 0.0f, 0.0f, 0.0f };
 		glm::vec3 Scale = { 1.0f, 1.0f, 1.0f };
 
-		glm::vec3 Front = glm::vec3(0.0f, 0.0f, 1.0f);
-		glm::vec3 Up = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::vec3 Right = glm::vec3(-1.0f, 0.0f, 0.0f);
+		glm::vec3 Front = glm::vec3(0.0f, 0.0f, -1.0f);
 		glm::vec3 WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+		glm::vec3 Right = glm::normalize(glm::cross(Front, WorldUp));
+		glm::vec3 Up = glm::cross(Right, Front);
 
 		TransformComponent() = default;
 		TransformComponent(const TransformComponent&) = default;
@@ -63,9 +63,9 @@ namespace Moly
 		{
 			// calculate the new Front vector
 			glm::vec3 front;
-			front.x = cos(glm::radians(Rotation.y + 90)) * cos(glm::radians(Rotation.x));
+			front.x = -sin(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
 			front.y = sin(glm::radians(Rotation.x));
-			front.z = sin(glm::radians(Rotation.y + 90)) * cos(glm::radians(Rotation.x));
+			front.z = -cos(glm::radians(Rotation.y)) * cos(glm::radians(Rotation.x));
 			Front = glm::normalize(front);
 ;			// also re-calculate the Right and Up vector
 			Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.

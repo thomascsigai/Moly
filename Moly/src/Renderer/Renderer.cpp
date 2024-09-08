@@ -100,10 +100,10 @@ namespace Moly
 				// view/projection transformations
 				glm::mat4 projection = camComponent->camera.projection;
 				glm::mat4 view = glm::mat4(1.0f);
-				view = glm::rotate(view, glm::radians(camTransform->Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
-				view = glm::rotate(view, glm::radians(camTransform->Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
-				view = glm::rotate(view, glm::radians(camTransform->Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
-				view = glm::translate(view, camTransform->Position);
+				view = glm::rotate(view, glm::radians(-camTransform->Rotation.x), glm::vec3(1.0f, 0.0f, 0.0f));
+				view = glm::rotate(view, glm::radians(-camTransform->Rotation.y), glm::vec3(0.0f, 1.0f, 0.0f));
+				view = glm::rotate(view, glm::radians(-camTransform->Rotation.z), glm::vec3(0.0f, 0.0f, 1.0f));
+				view = glm::translate(view, -camTransform->Position);
 				currentShader->setMat4("projection", projection);
 				currentShader->setMat4("view", view);
 
