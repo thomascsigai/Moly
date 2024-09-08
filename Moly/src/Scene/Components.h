@@ -219,9 +219,18 @@ namespace Moly
 		float cutOff = 12.5f;
 		float outerCutOff = 15.0f;
 
-		glm::vec3 ambient = glm::vec3(0.22);
+		glm::vec3 ambient = glm::vec3(0.22f);
 		glm::vec3 diffuse = glm::vec3(0.3f);
 		glm::vec3 specular = glm::vec3(0.75f);
+
+		void SetColor(glm::vec3 _color)
+		{
+			color = _color;
+
+			ambient = color * ambientFactor;
+			diffuse = color * diffuseFactor;
+			specular = color * specularFactor;
+		}
 
 		void DrawComponentInInspector() override
 		{

@@ -62,10 +62,17 @@ namespace Moly
 
 		static std::shared_ptr<Entity> selectedEntity = nullptr;
 
+		static bool showWireframe = false;
+
 
 		if (ImGui::CollapsingHeader("Rendering"))
 		{
 			ImGui::Spacing();
+			ImGui::Checkbox("Show Wireframe", &showWireframe);
+
+			if (showWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+			else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 			ImGui::SliderFloat("Gamma", &activeScene->GetRenderer()->gamma, 0.0f, 5.0f, "%.1f");
 			ImGui::Spacing();
 		}
