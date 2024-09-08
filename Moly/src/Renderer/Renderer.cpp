@@ -44,7 +44,7 @@ namespace Moly
 					uint32_t pointLightCount = 0;
 					uint32_t spotLightCount = 0;
 
-					currentShader->setFloat("material.shininess", 100.0f);
+					currentShader->setFloat("material.shininess", 400.0f);
 					currentShader->setFloat("gamma", gamma);
 					currentShader->setVec3("viewPos", camTransform->Position);
 
