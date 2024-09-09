@@ -13,13 +13,13 @@ namespace Moly
     float rectangleVertices[] =
     {
         // Coords    // texCoords
-         1.0f, -1.0f,  1.0f, 0.0f,
-        -1.0f, -1.0f,  0.0f, 0.0f,
         -1.0f,  1.0f,  0.0f, 1.0f,
-
-         1.0f,  1.0f,  1.0f, 1.0f,
+        -1.0f, -1.0f,  0.0f, 0.0f,
          1.0f, -1.0f,  1.0f, 0.0f,
-        -1.0f,  1.0f,  0.0f, 1.0f
+
+        -1.0f,  1.0f,  0.0f, 1.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f, 1.0f
     };
 
 	static void GLFWErrorCallback(int error, const char* description)
@@ -32,7 +32,7 @@ namespace Moly
         glViewport(0, 0, width, height);
     }
 
-    Window::Window(const WindowProps& props) : windowData(props)
+    Window::Window(const WindowProps& props) : windowData(props), framebufferShader(nullptr)
     {
         Init(props);
     }
@@ -86,8 +86,8 @@ namespace Moly
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
-		glCullFace(GL_BACK);
-        glFrontFace(GL_CCW);
+		glCullFace(GL_FRONT);
+        glFrontFace(GL_CW);
 
 
         InitImGui();
@@ -95,11 +95,14 @@ namespace Moly
 
         ML_CORE_INFO("Window {0} created", props.Title, props.Width, props.Height);
         
-        //UseFrameBuffer();
+        UseFrameBuffer();
 	}
 
     void Window::UseFrameBuffer()
     {
+        framebufferShader = new Shader("resources/shaders/framebuffer.vert", "resources/shaders/framebuffer.frag");
+        glUniform1i(glGetUniformLocation(framebufferShader->ID, "screenTexture"), 0);
+
         glGenVertexArrays(1, &rectVAO);
         glGenBuffers(1, &rectVBO);
         glBindVertexArray(rectVAO);
@@ -135,6 +138,7 @@ namespace Moly
         auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
         if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
             ML_CORE_ERROR("Framebuffer error: {0}\n", fboStatus);
+
     }
 
     void Window::InitImGui()
@@ -168,8 +172,10 @@ namespace Moly
 
     void Window::Clear()
     {
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glEnable(GL_DEPTH_TEST);
 
         // Démarrer un nouveau frame ImGui
         ImGui_ImplOpenGL3_NewFrame();
@@ -209,6 +215,18 @@ namespace Moly
         
         glfwSwapBuffers(windowGLFW);
         glfwPollEvents();
+    }
+
+    void Window::DrawFrameBuffer()
+    {
+        // Bind the default framebuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        // Draw the framebuffer rectangle
+        framebufferShader->use();
+        glBindVertexArray(rectVAO);
+        glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
+        glBindTexture(GL_TEXTURE_2D, framebufferTexture);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
     uint32_t Window::GetWidth() const

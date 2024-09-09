@@ -2,6 +2,7 @@
 
 #include <Core.h>
 #include <Log.h>
+#include <Shader.h>
 
 #include <sstream>
 #include <glad/glad.h>
@@ -47,10 +48,13 @@ namespace Moly {
 		void SetVSync(bool enabled);
 		bool IsVSync() const;
 
+		void DrawFrameBuffer();
+
 	private:
 		unsigned int FBO, RBO, framebufferTexture;
 		unsigned int rectVAO, rectVBO;
 		void UseFrameBuffer();
+		Shader* framebufferShader;
 		
 		virtual void Init(const WindowProps& props);
 
