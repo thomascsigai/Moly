@@ -56,11 +56,21 @@ uniform int NB_SPOT_LIGHTS;
 uniform SpotLight spotLights[MAX_LIGHTS];
 uniform Material material;
 uniform float gamma;
+uniform bool visualizeDepth;
 
 // function prototypes
 vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
+
+float near = 0.1f;
+float far = 90.0f;
+
+float LinearizeDepth(float depth)
+{
+	float z = depth * 2.0 - 1.0; // Back to NDC
+    return (2.0 * near * far) / (far + near - z * (far - near));
+}
 
 void main()
 {    
@@ -85,7 +95,9 @@ void main()
     
     vec4 fragColor = vec4(result, 1.0);
     fragColor.rgb = pow(fragColor.rgb, vec3(1.0/gamma));
-    FragColor = fragColor;
+
+    if (visualizeDepth) FragColor = vec4(vec3(LinearizeDepth(gl_FragCoord.z) / far), 1.0);
+    else FragColor = fragColor;
 }
 
 // calculates the color when using a directional light.

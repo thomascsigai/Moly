@@ -75,8 +75,7 @@ namespace Moly
 		void DrawComponentInInspector() override
 		{
 			ImGui::Spacing();
-			ImGui::Text("Position"); 
-			ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize("							 ").x);
+
 			ImGui::Text("X"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(50.0f);
 			ImGui::DragFloat("##MyDrag", &Position.x, 0.01f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
@@ -86,9 +85,8 @@ namespace Moly
 			ImGui::Text("Z"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(50.0f);
 			ImGui::DragFloat("##MyDrag3", &Position.z, 0.01f, -1000.0f, 1000.0f, "%.2f");
+			ImGui::SameLine(); ImGui::Text("Position");
 
-			ImGui::Text("Rotation");
-			ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize("							 ").x);
 			ImGui::Text("X"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(50.0f);
 			ImGui::DragFloat("##MyDrag4", &Rotation.x, 0.1f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
@@ -98,9 +96,8 @@ namespace Moly
 			ImGui::Text("Z"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(50.0f);
 			ImGui::DragFloat("##MyDrag6", &Rotation.z, 0.1f, -1000.0f, 1000.0f, "%.2f");
+			ImGui::SameLine(); ImGui::Text("Rotation");
 
-			ImGui::Text("Scale");
-			ImGui::SameLine(ImGui::GetContentRegionAvail().x - ImGui::CalcTextSize("							 ").x);
 			ImGui::Text("X"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(50.0f);
 			ImGui::DragFloat("##MyDrag7", &Scale.x, 0.01f, -1000.0f, 1000.0f, "%.2f"); ImGui::SameLine();
@@ -110,6 +107,8 @@ namespace Moly
 			ImGui::Text("Z"); ImGui::SameLine();
 			ImGui::SetNextItemWidth(50.0f);
 			ImGui::DragFloat("##MyDrag9", &Scale.z, 0.01f, -1000.0f, 1000.0f, "%.2f");
+			ImGui::SameLine(); ImGui::Text("Scale");
+
 			ImGui::Spacing();
 		}
 
@@ -158,13 +157,10 @@ namespace Moly
 				float nearPlane = camera.perspectiveNear;
 				float farPlane = camera.perspectiveFar;
 
-				ImGui::SetNextItemWidth(210.0f);
 				ImGui::SliderFloat("FOV", &fov, 1.0f, 150.0f);
 				ImGui::Spacing(); ImGui::Spacing();
 				ImGui::Text("Clipping Planes");
-				ImGui::SetNextItemWidth(210.0f);
 				ImGui::SliderFloat("Near", &nearPlane, 0.1f, 10000.0f, "%.1f");
-				ImGui::SetNextItemWidth(210.0f);
 				ImGui::SliderFloat("Far", &farPlane, 0.1f, 10000.0f, "%.1f");
 				
 				camera.SetPerspective(fov, nearPlane, farPlane);
@@ -175,13 +171,10 @@ namespace Moly
 				float nearPlane = camera.orthoNear;
 				float farPlane = camera.orthoFar;
 
-				ImGui::SetNextItemWidth(210.0f);
 				ImGui::SliderFloat("Size", &size, 1.0f, 150.0f);
 				ImGui::Spacing(); ImGui::Spacing();
 				ImGui::Text("Clipping Planes");
-				ImGui::SetNextItemWidth(210.0f);
 				ImGui::SliderFloat("Near", &nearPlane, -1000.0f, 1000.0f, "%.1f");
-				ImGui::SetNextItemWidth(210.0f);
 				ImGui::SliderFloat("Far", &farPlane, -1000.0f, 1000.0f, "%.1f");
 
 				camera.SetOrthographic(size, nearPlane, farPlane);
@@ -189,8 +182,7 @@ namespace Moly
 
 			ImGui::Spacing();
 			ImGui::Spacing();
-			ImGui::SetNextItemWidth(200.0f);
-			ImGui::SliderFloat("Free Cam Speed", &freeCamSpeed, 0.1f, 20.0f, "%.1f");
+			ImGui::SliderFloat("Cam Speed", &freeCamSpeed, 0.1f, 20.0f, "%.1f");
 
 			ImGui::Spacing();
 		}

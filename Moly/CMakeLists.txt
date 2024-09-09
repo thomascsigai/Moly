@@ -13,7 +13,7 @@ add_library(Moly SHARED
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
-add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/ImGui)
+add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/ImGUI)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/assimp)
 
 target_include_directories(Moly PUBLIC 

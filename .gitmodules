@@ -9,7 +9,7 @@
 	url = https://github.com/g-truc/glm
 [submodule "Moly/vendor/ImGUI"]
 	path = Moly/vendor/ImGUI
-	url = https://github.com/ocornut/imgui
+	url = https://github.com/ocornut/imgui/tree/docking
 [submodule "Moly/vendor/assimp"]
 	path = Moly/vendor/assimp
 	url = https://github.com/assimp/assimp

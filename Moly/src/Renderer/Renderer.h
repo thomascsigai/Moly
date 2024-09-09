@@ -19,6 +19,7 @@ namespace Moly
 			const std::vector<std::shared_ptr<Entity>>& lights);
 
 		float gamma = 2.2f;
+		bool visualizeDepth = false;
 	
 	private:
 		Shader modelLoadingShader;

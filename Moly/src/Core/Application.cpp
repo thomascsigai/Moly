@@ -39,7 +39,8 @@ namespace Moly
 			OnUpdate();
 			
 			#if DEBUG_MODE
-				DrawDebugWindow();
+				ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.1f, 0.1f, 0.1f, 0.8f));
+				DrawDebugWindows();
 			#endif
 
 			appWindow->Update();
@@ -52,73 +53,36 @@ namespace Moly
 		windowData = _windowData;
 	}
 
-	void Application::DrawDebugWindow() 
+	void Application::DrawDebugWindows() 
 	{
-		ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
+		DrawSceneHierarchy();
+		DrawPerformanceWindow();
+		DrawRenderingWindow();
 
-		ImGui::Begin(windowData.Title.c_str());
-
-		static std::shared_ptr<Entity> selectedEntity = nullptr;
-
-		static bool showWireframe = false;
-
-
-		if (ImGui::CollapsingHeader("Rendering"))
-		{
-			ImGui::Spacing();
-			ImGui::Checkbox("Show Wireframe", &showWireframe);
-
-			if (showWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-			ImGui::SliderFloat("Gamma", &activeScene->GetRenderer()->gamma, 0.0f, 5.0f, "%.1f");
-			ImGui::Spacing();
-		}
-		
-		if (ImGui::CollapsingHeader("Scene Hierarchy", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			ImGui::Spacing();
-			std::vector<std::shared_ptr<Entity>> entities = activeScene->GetEntities();
-			
-			for (int i = 0; i < entities.size(); i++)
-			{
-				ImGui::SetCursorPosX(20.0f);
-				if (ImGui::Selectable(entities[i]->GetName().c_str(), selectedEntity == entities[i], ImGuiSelectableFlags_SpanAllColumns))
-					selectedEntity = entities[i];
-			}
-			ImGui::Spacing();
-		}
-
-		if (ImGui::CollapsingHeader("Performance"))
-		{
-			ImGui::Spacing();
-			fpsSamples[currentSampleIndex] = ImGui::GetIO().Framerate;
-			currentSampleIndex = (currentSampleIndex + 1) % MAX_FPS_SAMPLES;
-
-			float average = 0.0f;
-			for (int n = 0; n < IM_ARRAYSIZE(fpsSamples); n++)
-				average += fpsSamples[n];
-			average /= (float)IM_ARRAYSIZE(fpsSamples);
-			char overlay[32];
-			sprintf(overlay, "avg %f fps", average);
-			ImGui::PlotHistogram("Framerate", fpsSamples, IM_ARRAYSIZE(fpsSamples), 0, overlay, 0.0f, 250.0f, ImVec2(0, 80.0f));
-		
-			bool VSync = appWindow->IsVSync();
-			ImGui::Checkbox("Enable VSync", &VSync);
-			appWindow->SetVSync(VSync);
-			
-			ImGui::NewLine();
-			ImGui::Spacing();
-		}
-
-		ImGui::End();
-
-		DrawInspectorWindow(selectedEntity);
+		ImGui::PopStyleColor();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	}
+
+	void Application::DrawSceneHierarchy()
+	{
+		static std::shared_ptr<Entity> selectedEntity = nullptr;
+
+		ImGui::Begin("Scene Hierarchy");
+		ImGui::Spacing();
+		std::vector<std::shared_ptr<Entity>> entities = activeScene->GetEntities();
+
+		for (int i = 0; i < entities.size(); i++)
+		{
+			ImGui::SetCursorPosX(20.0f);
+			if (ImGui::Selectable(entities[i]->GetName().c_str(), selectedEntity == entities[i], ImGuiSelectableFlags_SpanAllColumns))
+				selectedEntity = entities[i];
+		}
+		ImGui::Spacing();
+		ImGui::End();
+
+		DrawInspectorWindow(selectedEntity);
 	}
 
 	void Application::DrawInspectorWindow(std::shared_ptr<Entity> selectedEntity)
@@ -136,6 +100,51 @@ namespace Moly
 					component->DrawComponentInInspector();
 			}
 		}
+
+		ImGui::End();
+	}
+
+	void Application::DrawPerformanceWindow()
+	{
+		ImGui::Begin("Performance");
+
+		ImGui::Spacing();
+		fpsSamples[currentSampleIndex] = ImGui::GetIO().Framerate;
+		currentSampleIndex = (currentSampleIndex + 1) % MAX_FPS_SAMPLES;
+
+		float average = 0.0f;
+		for (int n = 0; n < IM_ARRAYSIZE(fpsSamples); n++)
+			average += fpsSamples[n];
+		average /= (float)IM_ARRAYSIZE(fpsSamples);
+		char overlay[32];
+		sprintf(overlay, "avg %f fps", average);
+		ImGui::PlotHistogram("Framerate", fpsSamples, IM_ARRAYSIZE(fpsSamples), 0, overlay, 0.0f, 250.0f, ImVec2(0, 80.0f));
+
+		bool VSync = appWindow->IsVSync();
+		ImGui::Checkbox("Enable VSync", &VSync);
+		appWindow->SetVSync(VSync);
+
+		ImGui::NewLine();
+		ImGui::Spacing();
+
+		ImGui::End();
+	}
+
+	void Application::DrawRenderingWindow()
+	{
+		ImGui::Begin("Rendering");
+
+		ImGui::Spacing();
+		ImGui::Checkbox("Visualize Depth", &activeScene->GetRenderer()->visualizeDepth);
+
+		static bool showWireframe = false;
+		ImGui::Checkbox("Show Wireframe", &showWireframe);
+
+		if (showWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		ImGui::SliderFloat("Gamma", &activeScene->GetRenderer()->gamma, 0.0f, 5.0f, "%.1f");
+		ImGui::Spacing();
 
 		ImGui::End();
 	}

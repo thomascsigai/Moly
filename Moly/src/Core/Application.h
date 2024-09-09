@@ -25,8 +25,11 @@ namespace Moly
 		Window* appWindow = nullptr;
 		WindowProps windowData = WindowProps();
 
-		void DrawDebugWindow();
+		void DrawDebugWindows();
+		void DrawSceneHierarchy();
 		void DrawInspectorWindow(std::shared_ptr<Entity>);
+		void DrawPerformanceWindow();
+		void DrawRenderingWindow();
 
 		virtual void OnUpdate() {}
 		virtual void OnStart() {}

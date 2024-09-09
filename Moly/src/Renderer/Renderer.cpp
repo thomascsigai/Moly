@@ -38,6 +38,7 @@ namespace Moly
 				else currentShader = &modelLoadingShader;
 
 				currentShader->use();
+				currentShader->setBool("visualizeDepth", visualizeDepth);
 
 				if (!lightComponent)
 				{
