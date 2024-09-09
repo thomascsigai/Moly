@@ -48,11 +48,15 @@ namespace Moly {
 		bool IsVSync() const;
 
 	private:
+		unsigned int FBO, RBO, framebufferTexture;
+		unsigned int rectVAO, rectVBO;
+		void UseFrameBuffer();
+		
 		virtual void Init(const WindowProps& props);
 
 		WindowProps windowData;
 		GLFWwindow* windowGLFW;
 
-		void Window::InitImGui();
+		void InitImGui();
 	};
 }

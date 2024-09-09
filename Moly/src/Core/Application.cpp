@@ -135,6 +135,13 @@ namespace Moly
 		ImGui::Begin("Rendering");
 
 		ImGui::Spacing();
+
+		static bool faceCulling = true;
+		ImGui::Checkbox("Face Culling", &faceCulling);
+
+		if (faceCulling) glEnable(GL_CULL_FACE);
+		else glDisable(GL_CULL_FACE);
+
 		ImGui::Checkbox("Visualize Depth", &activeScene->GetRenderer()->visualizeDepth);
 
 		static bool showWireframe = false;
