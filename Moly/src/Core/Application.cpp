@@ -153,6 +153,8 @@ namespace Moly
 		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		ImGui::SliderFloat("Gamma", &activeScene->GetRenderer()->gamma, 0.0f, 5.0f, "%.1f");
+
+		ImGui::Combo("Post-Process", &appWindow->useFrameBuffer, "None\0Kernel\0\0");
 		ImGui::Spacing();
 
 		ImGui::End();

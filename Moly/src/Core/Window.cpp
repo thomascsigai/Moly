@@ -94,11 +94,11 @@ namespace Moly
         ML_CORE_INFO("ImGui Initialized");
 
         ML_CORE_INFO("Window {0} created", props.Title, props.Width, props.Height);
-        
-        UseFrameBuffer();
+
+        InitFrameBuffer();
 	}
 
-    void Window::UseFrameBuffer()
+    void Window::InitFrameBuffer()
     {
         framebufferShader = new Shader("resources/shaders/framebuffer.vert", "resources/shaders/framebuffer.frag");
         glUniform1i(glGetUniformLocation(framebufferShader->ID, "screenTexture"), 0);
@@ -172,7 +172,11 @@ namespace Moly
 
     void Window::Clear()
     {
-		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+        if (useFrameBuffer)
+            glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+        else
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
@@ -219,6 +223,8 @@ namespace Moly
 
     void Window::DrawFrameBuffer()
     {
+        if (!useFrameBuffer) return;
+
         // Bind the default framebuffer
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
         // Draw the framebuffer rectangle
