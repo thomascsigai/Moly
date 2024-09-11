@@ -24,8 +24,21 @@ namespace Moly
 	private:
 		Shader modelLoadingShader;
 		Shader lightShader;
+		Shader shadowMapShader;
+		Shader framebufferShader;
+
+		unsigned int FBO, RBO, framebufferTexture;
+		unsigned int rectVAO, rectVBO;
+		void InitFrameBuffer();
+		void DrawFrameBuffer();
+
+		void InitShadowMapFrameBuffer();
 
 		void ResetLighting(Shader& shader);
+
+		unsigned int shadowMapFBO;
+		unsigned int shadowMapWidth = 2048, shadowMapHeight = 2048;
+		unsigned int shadowMap;
 
 	};
 }

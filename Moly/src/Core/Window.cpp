@@ -10,18 +10,6 @@ namespace Moly
     float TimeManipulation::LastFrame = 0.0f;
     float TimeManipulation::GameTime = 0.0f;
 
-    float rectangleVertices[] =
-    {
-        // Coords    // texCoords
-        -1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-
-        -1.0f,  1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f, 1.0f
-    };
-
 	static void GLFWErrorCallback(int error, const char* description)
 	{
 		ML_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
@@ -32,7 +20,7 @@ namespace Moly
         glViewport(0, 0, width, height);
     }
 
-    Window::Window(const WindowProps& props) : windowData(props), framebufferShader(nullptr)
+    Window::Window(const WindowProps& props) : windowData(props)
     {
         Init(props);
     }
@@ -86,60 +74,14 @@ namespace Moly
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT);
-        glFrontFace(GL_CW);
-
+		glCullFace(GL_BACK);
+        glFrontFace(GL_CCW);
 
         InitImGui();
         ML_CORE_INFO("ImGui Initialized");
 
         ML_CORE_INFO("Window {0} created", props.Title, props.Width, props.Height);
-
-        InitFrameBuffer();
 	}
-
-    void Window::InitFrameBuffer()
-    {
-        framebufferShader = new Shader("resources/shaders/framebuffer.vert", "resources/shaders/framebuffer.frag");
-        glUniform1i(glGetUniformLocation(framebufferShader->ID, "screenTexture"), 0);
-
-        glGenVertexArrays(1, &rectVAO);
-        glGenBuffers(1, &rectVBO);
-        glBindVertexArray(rectVAO);
-        glBindBuffer(GL_ARRAY_BUFFER, rectVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(rectangleVertices), &rectangleVertices, GL_STATIC_DRAW);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-        // Create Frame Buffer Object
-        glGenFramebuffers(1, &FBO);
-        glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-
-        // Create Framebuffer Texture
-        glGenTextures(1, &framebufferTexture);
-        glBindTexture(GL_TEXTURE_2D, framebufferTexture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, windowData.Width, windowData.Height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, framebufferTexture, 0);
-
-        // Create Render Buffer Object
-        glGenRenderbuffers(1, &RBO);
-        glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, windowData.Width, windowData.Height);
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
-
-
-        // Error checking framebuffer
-        auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-        if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
-            ML_CORE_ERROR("Framebuffer error: {0}\n", fboStatus);
-
-    }
 
     void Window::InitImGui()
     {
@@ -172,11 +114,6 @@ namespace Moly
 
     void Window::Clear()
     {
-        if (useFrameBuffer)
-            glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-        else
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
@@ -219,20 +156,6 @@ namespace Moly
         
         glfwSwapBuffers(windowGLFW);
         glfwPollEvents();
-    }
-
-    void Window::DrawFrameBuffer()
-    {
-        if (!useFrameBuffer) return;
-
-        // Bind the default framebuffer
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        // Draw the framebuffer rectangle
-        framebufferShader->use();
-        glBindVertexArray(rectVAO);
-        glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
-        glBindTexture(GL_TEXTURE_2D, framebufferTexture);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
     }
 
     uint32_t Window::GetWidth() const

@@ -5,10 +5,30 @@
 
 namespace Moly
 {
+	float rectangleVertices[] =
+	{
+		// Coords    // texCoords
+		-1.0f, -1.0f,  0.0f, 0.0f,  // Bottom-left
+		 1.0f, -1.0f,  1.0f, 0.0f,  // Bottom-right
+		-1.0f,  1.0f,  0.0f, 1.0f,  // Top-left
+
+		 1.0f, -1.0f,  1.0f, 0.0f,  // Bottom-right
+		 1.0f,  1.0f,  1.0f, 1.0f,  // Top-right
+		-1.0f,  1.0f,  0.0f, 1.0f   // Top-left
+	};
+
 	Renderer::Renderer() : 
 		modelLoadingShader("resources/shaders/model_loading.vert", "resources/shaders/model_loading.frag"),
-		lightShader("resources/shaders/light.vert", "resources/shaders/light.frag")
-	{}
+		lightShader("resources/shaders/light.vert", "resources/shaders/light.frag"),
+		shadowMapShader("resources/shaders/shadow_map.vert", "resources/shaders/shadow_map.frag"),
+		framebufferShader("resources/shaders/post-process/kernel.vert", "resources/shaders/post-process/kernel.frag")
+	{
+		shadowMap = 0;
+		shadowMapFBO = 0;
+
+		//InitFrameBuffer();
+		//InitShadowMapFrameBuffer();
+	}
 
 	void Renderer::ResetLighting(Shader& shader)
 	{
@@ -19,11 +39,26 @@ namespace Moly
 		shader.setVec3("dirLight.specular", zero);
 	}
 
+	void Renderer::DrawFrameBuffer()
+	{
+	   // Bind the default framebuffer
+	    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	    // Draw the framebuffer rectangle
+	    framebufferShader.use();
+	    glBindVertexArray(rectVAO);
+	    glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
+	    glBindTexture(GL_TEXTURE_2D, framebufferTexture);
+	    glDrawArrays(GL_TRIANGLES, 0, 6);
+	}
+
 	void Renderer::Render(const std::vector<std::shared_ptr<Entity>>& entities, const std::shared_ptr<Entity> cam,
 		const std::vector<std::shared_ptr<Entity>>& lights)
 	{
 		std::shared_ptr<TransformComponent> camTransform = cam->GetComponent<TransformComponent>();
 		std::shared_ptr<CameraComponent> camComponent = cam->GetComponent<CameraComponent>();
+
+		/*glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
 
 		for (const auto& entity : entities)
 		{
@@ -124,5 +159,48 @@ namespace Moly
 				delete currentShader;
 			}
 		}
+		//DrawFrameBuffer();
+	}
+
+	void Renderer::InitFrameBuffer()
+	{
+		glUniform1i(glGetUniformLocation(framebufferShader.ID, "screenTexture"), 0);
+
+		glGenVertexArrays(1, &rectVAO);
+		glGenBuffers(1, &rectVBO);
+		glBindVertexArray(rectVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, rectVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(rectangleVertices), &rectangleVertices, GL_STATIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+		// Create Frame Buffer Object
+		glGenFramebuffers(1, &FBO);
+		glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+		// Create Framebuffer Texture
+		glGenTextures(1, &framebufferTexture);
+		glBindTexture(GL_TEXTURE_2D, framebufferTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1600, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, framebufferTexture, 0);
+
+		// Create Render Buffer Object
+		glGenRenderbuffers(1, &RBO);
+		glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1600, 900);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+
+
+		// Error checking framebuffer
+		auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+		if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
+			ML_CORE_ERROR("Framebuffer error: {0}\n", fboStatus);
+
 	}
 }

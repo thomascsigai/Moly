@@ -38,8 +38,6 @@ namespace Moly
 			
 			OnUpdate();
 			
-			appWindow->DrawFrameBuffer();
-			
 			#if DEBUG_MODE
 				ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.1f, 0.1f, 0.1f, 0.8f));
 				DrawDebugWindows();

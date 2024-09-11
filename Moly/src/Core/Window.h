@@ -49,14 +49,8 @@ namespace Moly {
 		bool IsVSync() const;
 
 		int useFrameBuffer = 0;
-		void DrawFrameBuffer();
 
 	private:
-		unsigned int FBO, RBO, framebufferTexture;
-		unsigned int rectVAO, rectVBO;
-		void InitFrameBuffer();
-		Shader* framebufferShader;
-		
 		virtual void Init(const WindowProps& props);
 
 		WindowProps windowData;
