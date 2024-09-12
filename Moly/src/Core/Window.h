@@ -48,8 +48,6 @@ namespace Moly {
 		void SetVSync(bool enabled);
 		bool IsVSync() const;
 
-		int useFrameBuffer = 0;
-
 	private:
 		virtual void Init(const WindowProps& props);
 

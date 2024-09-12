@@ -20,12 +20,15 @@ namespace Moly
 
 		float gamma = 2.2f;
 		bool visualizeDepth = false;
+		bool faceCulling = true;
+		bool showWireframe = false;
+		int selectedPostProcess = 0;
 	
 	private:
 		Shader modelLoadingShader;
 		Shader lightShader;
 		Shader shadowMapShader;
-		Shader framebufferShader;
+		std::vector<Shader> postProcessShaders;
 
 		unsigned int FBO, RBO, framebufferTexture;
 		unsigned int rectVAO, rectVBO;
@@ -34,7 +37,7 @@ namespace Moly
 
 		void InitShadowMapFrameBuffer();
 
-		void ResetLighting(Shader& shader);
+		void ProcessRenderingSettings();
 
 		unsigned int shadowMapFBO;
 		unsigned int shadowMapWidth = 2048, shadowMapHeight = 2048;

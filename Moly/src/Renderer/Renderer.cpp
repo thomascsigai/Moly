@@ -20,23 +20,21 @@ namespace Moly
 	Renderer::Renderer() : 
 		modelLoadingShader("resources/shaders/model_loading.vert", "resources/shaders/model_loading.frag"),
 		lightShader("resources/shaders/light.vert", "resources/shaders/light.frag"),
-		shadowMapShader("resources/shaders/shadow_map.vert", "resources/shaders/shadow_map.frag"),
-		framebufferShader("resources/shaders/post-process/kernel.vert", "resources/shaders/post-process/kernel.frag")
+		shadowMapShader("resources/shaders/shadow_map.vert", "resources/shaders/shadow_map.frag")
 	{
+		//Post-process shader initialisation
+		postProcessShaders.push_back(Shader("resources/shaders/post-process/default.vert", "resources/shaders/post-process/default.frag"));
+		postProcessShaders.push_back(Shader("resources/shaders/post-process/kernel.vert", "resources/shaders/post-process/kernel.frag"));
+
+		FBO = 0;
+		RBO = 0;
+		framebufferTexture = 0;
+		rectVBO = 0;
+		rectVAO = 0;
 		shadowMap = 0;
 		shadowMapFBO = 0;
 
-		//InitFrameBuffer();
-		//InitShadowMapFrameBuffer();
-	}
-
-	void Renderer::ResetLighting(Shader& shader)
-	{
-		glm::vec3 zero = glm::vec3(0.0f);
-		shader.setVec3("dirLight.direction", zero);
-		shader.setVec3("dirLight.ambient", zero);
-		shader.setVec3("dirLight.diffuse", zero);
-		shader.setVec3("dirLight.specular", zero);
+		InitFrameBuffer();
 	}
 
 	void Renderer::DrawFrameBuffer()
@@ -44,7 +42,7 @@ namespace Moly
 	   // Bind the default framebuffer
 	    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	    // Draw the framebuffer rectangle
-	    framebufferShader.use();
+		postProcessShaders[selectedPostProcess].use();
 	    glBindVertexArray(rectVAO);
 	    glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
 	    glBindTexture(GL_TEXTURE_2D, framebufferTexture);
@@ -54,11 +52,10 @@ namespace Moly
 	void Renderer::Render(const std::vector<std::shared_ptr<Entity>>& entities, const std::shared_ptr<Entity> cam,
 		const std::vector<std::shared_ptr<Entity>>& lights)
 	{
+		ProcessRenderingSettings();
+
 		std::shared_ptr<TransformComponent> camTransform = cam->GetComponent<TransformComponent>();
 		std::shared_ptr<CameraComponent> camComponent = cam->GetComponent<CameraComponent>();
-
-		/*glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);*/
 
 		for (const auto& entity : entities)
 		{
@@ -159,12 +156,32 @@ namespace Moly
 				delete currentShader;
 			}
 		}
-		//DrawFrameBuffer();
+		if (selectedPostProcess != 0) DrawFrameBuffer();
+	}
+
+	void Renderer::ProcessRenderingSettings()
+	{
+		if (faceCulling) glEnable(GL_CULL_FACE);
+		else glDisable(GL_CULL_FACE);
+
+		if (showWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		if (selectedPostProcess != 0)
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		}
+		else
+		{
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		}
 	}
 
 	void Renderer::InitFrameBuffer()
 	{
-		glUniform1i(glGetUniformLocation(framebufferShader.ID, "screenTexture"), 0);
+		glUniform1i(glGetUniformLocation(postProcessShaders[selectedPostProcess].ID, "screenTexture"), 0);
 
 		glGenVertexArrays(1, &rectVAO);
 		glGenBuffers(1, &rectVBO);

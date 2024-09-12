@@ -133,28 +133,21 @@ namespace Moly
 	void Application::DrawRenderingWindow()
 	{
 		ImGui::Begin("Rendering");
-
 		ImGui::Spacing();
 
-		static bool faceCulling = true;
-		ImGui::Checkbox("Face Culling", &faceCulling);
+		auto renderer = activeScene->GetRenderer();
 
-		if (faceCulling) glEnable(GL_CULL_FACE);
-		else glDisable(GL_CULL_FACE);
+		ImGui::Checkbox("Face Culling", &renderer->faceCulling);
 
-		ImGui::Checkbox("Visualize Depth", &activeScene->GetRenderer()->visualizeDepth);
+		ImGui::Checkbox("Visualize Depth", &renderer->visualizeDepth);
 
-		static bool showWireframe = false;
-		ImGui::Checkbox("Show Wireframe", &showWireframe);
+		ImGui::Checkbox("Show Wireframe", &renderer->showWireframe);
 
-		if (showWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		ImGui::SliderFloat("Gamma", &renderer->gamma, 0.0f, 5.0f, "%.1f");
 
-		ImGui::SliderFloat("Gamma", &activeScene->GetRenderer()->gamma, 0.0f, 5.0f, "%.1f");
-
-		ImGui::Combo("Post-Process", &appWindow->useFrameBuffer, "None\0Kernel\0\0");
+		ImGui::Combo("Post-Process", &renderer->selectedPostProcess, "None\0Kernel\0\0");
+		
 		ImGui::Spacing();
-
 		ImGui::End();
 	}
 }
