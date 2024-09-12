@@ -8,3 +8,4 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Ajouter les sous-répertoires pour les différents modules du moteur
 add_subdirectory(Moly)
 add_subdirectory(Sandbox)
+add_subdirectory(Sponza)
