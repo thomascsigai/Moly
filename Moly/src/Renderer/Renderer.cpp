@@ -79,21 +79,28 @@ namespace Moly
 				else currentShader = &modelLoadingShader;
 
 				currentShader->use();
-				currentShader->setBool("visualizeDepth", visualizeDepth);
-
 				if (!lightComponent)
 				{
 					uint32_t pointLightCount = 0;
 					uint32_t spotLightCount = 0;
 
+					// Définir les samplers de matériau
+					currentShader->setInt("material.diffuse", 0);
+					currentShader->setInt("material.specular", 1);
+					currentShader->setInt("material.normal", 2);
+
+					// Paramètres du matériau
 					currentShader->setFloat("material.shininess", 400.0f);
 					currentShader->setFloat("gamma", gamma);
+					currentShader->setBool("visualizeDepth", visualizeDepth);
 					currentShader->setVec3("viewPos", camTransform->Position);
 
 					for (int i = 0; i < lights.size(); i++)
 					{
 						auto light = lights[i]->GetComponent<LightComponent>();
 						auto lightTransform = lights[i]->GetComponent<TransformComponent>();
+
+						currentShader->setVec3("lightPos", lightTransform->Position);
 
 						if (light->type == LightType::DirectionnalLight)
 						{

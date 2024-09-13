@@ -33,8 +33,6 @@ namespace Moly
 
 		ML_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
-        stbi_set_flip_vertically_on_load(true);
-
 		if (s_GLFWWindowCount == 0)
 		{
 			int success = glfwInit();

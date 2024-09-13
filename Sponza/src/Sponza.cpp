@@ -29,7 +29,7 @@ namespace Moly
 			auto entity1 = activeScene->createEntity("Sponza");
 			entity1->AddComponent(std::make_shared<TransformComponent>());
 			entity1->GetComponent<TransformComponent>()->Scale = glm::vec3(.05f);
-			entity1->AddComponent(std::make_shared<ModelComponent>("resources/models/Sponza/Sponza.gltf"));
+			entity1->AddComponent(std::make_shared<ModelComponent>("resources/models/Sponza/sponza.obj"));
 
 			auto lightDir = activeScene->createEntity("Directionnal Light");
 			lightDir->AddComponent(std::make_shared<TransformComponent>(glm::vec3(0.0f, 50.0f, 0.0f)));
