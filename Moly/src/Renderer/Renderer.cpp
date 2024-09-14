@@ -25,6 +25,10 @@ namespace Moly
 		//Post-process shader initialisation
 		postProcessShaders.push_back(Shader("resources/shaders/post-process/default.vert", "resources/shaders/post-process/default.frag"));
 		postProcessShaders.push_back(Shader("resources/shaders/post-process/kernel.vert", "resources/shaders/post-process/kernel.frag"));
+		postProcessShaders.push_back(Shader("resources/shaders/post-process/blur.vert", "resources/shaders/post-process/blur.frag"));
+		postProcessShaders.push_back(Shader("resources/shaders/post-process/tv.vert", "resources/shaders/post-process/tv.frag"));
+		postProcessShaders.push_back(Shader("resources/shaders/post-process/pixel.vert", "resources/shaders/post-process/pixel.frag"));
+		postProcessShaders.push_back(Shader("resources/shaders/post-process/chrom_abb.vert", "resources/shaders/post-process/chrom_abb.frag"));
 
 		FBO = 0;
 		RBO = 0;
@@ -43,6 +47,11 @@ namespace Moly
 	    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	    // Draw the framebuffer rectangle
 		postProcessShaders[selectedPostProcess].use();
+		postProcessShaders[selectedPostProcess].setFloat("time", TimeManipulation::GameTime);
+		postProcessShaders[selectedPostProcess].setFloat("pixelSize", 3.5f);
+		postProcessShaders[selectedPostProcess].setFloat("blurAmount", 10.0f);
+		postProcessShaders[selectedPostProcess].setFloat("chromAbbOffsetAmount", .05f);
+		postProcessShaders[selectedPostProcess].setVec2("resolution", 1920, 1080);
 	    glBindVertexArray(rectVAO);
 	    glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
 	    glBindTexture(GL_TEXTURE_2D, framebufferTexture);
@@ -70,28 +79,21 @@ namespace Moly
 				else currentShader = &modelLoadingShader;
 
 				currentShader->use();
+				currentShader->setBool("visualizeDepth", visualizeDepth);
+
 				if (!lightComponent)
 				{
 					uint32_t pointLightCount = 0;
 					uint32_t spotLightCount = 0;
 
-					// Définir les samplers de matériau
-					currentShader->setInt("material.diffuse", 0);
-					currentShader->setInt("material.specular", 1);
-					currentShader->setInt("material.normal", 2);
-
-					// Paramètres du matériau
 					currentShader->setFloat("material.shininess", 400.0f);
 					currentShader->setFloat("gamma", gamma);
-					currentShader->setBool("visualizeDepth", visualizeDepth);
 					currentShader->setVec3("viewPos", camTransform->Position);
 
 					for (int i = 0; i < lights.size(); i++)
 					{
 						auto light = lights[i]->GetComponent<LightComponent>();
 						auto lightTransform = lights[i]->GetComponent<TransformComponent>();
-
-						currentShader->setVec3("lightPos", lightTransform->Position);
 
 						if (light->type == LightType::DirectionnalLight)
 						{
@@ -177,13 +179,13 @@ namespace Moly
 		if (selectedPostProcess != 0)
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
 		else
 		{
 			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
 		}
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void Renderer::InitFrameBuffer()

@@ -259,7 +259,7 @@ namespace Moly
 			
 			ImGui::SliderFloat("Ambient", &ambientFactor, 0.0f, 1.0f, "%.2f");
 			ImGui::SliderFloat("Diffuse", &diffuseFactor, 0.0f, 1.0f, "%.2f");
-			ImGui::SliderFloat("Specular", &specularFactor, 0.0f, 10.0f, "%.2f");
+			ImGui::SliderFloat("Specular", &specularFactor, 0.0f, 1.0f, "%.2f");
 
 			ambient = color * ambientFactor;
 			diffuse = color * diffuseFactor;

@@ -12,7 +12,7 @@ namespace Moly
 
     void Scene::Update()
     {
-        if (primaryCam) ProcessCameraMovements();
+        ProcessCameraMovements();
         if (entities.size() != 0) renderer.Render(entities, primaryCam, lights);
     }
 
