@@ -47,6 +47,7 @@ struct SpotLight {
 in vec3 FragPos;  
 in vec3 Normal;  
 in vec2 TexCoords;
+in vec4 FragPosLightSpace; // Position du fragment dans l'espace de la lumière (ajouté)
 
 uniform vec3 viewPos;
 uniform DirLight dirLight;
@@ -58,8 +59,10 @@ uniform Material material;
 uniform float gamma;
 uniform bool visualizeDepth;
 
-// function prototypes
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir);
+uniform sampler2D shadowMap; // Shadow map (ajouté)
+
+// Prototypes des fonctions
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir, float shadow); // Modifié pour inclure le shadow
 vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 vec3 CalcSpotLight(SpotLight light, vec3 normal, vec3 fragPos, vec3 viewDir);
 
@@ -68,54 +71,93 @@ float far = 90.0f;
 
 float LinearizeDepth(float depth)
 {
-	float z = depth * 2.0 - 1.0; // Back to NDC
+    float z = depth * 2.0 - 1.0; // Retour à NDC
     return (2.0 * near * far) / (far + near - z * (far - near));
+}
+
+// Fonction de calcul de l'ombre
+float ShadowCalculation(vec4 fragPosLightSpace, vec3 normal, vec3 lightDir)
+{
+    // Projection perspective divide
+    vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
+    // Transformation vers l'espace [0,1]
+    projCoords = projCoords * 0.5 + 0.5;
+    // Vérifier si le fragment est à l'extérieur de la shadow map
+    if(projCoords.z > 1.0)
+        return 0.0;
+    // Récupérer la profondeur la plus proche depuis la perspective de la lumière
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    // Récupérer la profondeur actuelle du fragment depuis la perspective de la lumière
+    float currentDepth = projCoords.z;
+    // Calcul du biais pour éviter l'acné des ombres
+    float bias = max(0.005 * (1.0 - dot(normal, lightDir)), 0.0005);
+    // Vérifier si le fragment est dans l'ombre
+    float shadow = 0.0;
+    vec2 texelSize = 2.0 / textureSize(shadowMap, 0);
+    for(int x = -1; x <= 1; ++x)
+    {
+        for(int y = -1; y <= 1; ++y)
+        {
+            float pcfDepth = texture(shadowMap, projCoords.xy + vec2(x, y) * texelSize).r; 
+            shadow += currentDepth - bias > pcfDepth ? 1.0 : 0.0;        
+        }    
+    }
+    shadow /= 9.0;
+    return shadow;
 }
 
 void main()
 {    
-    // properties
+    // Propriétés du fragment
     vec3 norm = normalize(Normal);
     vec3 viewDir = normalize(viewPos - FragPos);
-    
-    // == =====================================================
-    // Our lighting is set up in 3 phases: directional, point lights and an optional flashlight
-    // For each phase, a calculate function is defined that calculates the corresponding color
-    // per lamp. In the main() function we take all the calculated colors and sum them up for
-    // this fragment's final color.
-    // == =====================================================
-    // phase 1: directional lighting
-    vec3 result = CalcDirLight(dirLight, norm, viewDir);
-    // phase 2: point lights
+
+    // Calcul de la direction de la lumière directionnelle
+    vec3 lightDir = normalize(-dirLight.direction);
+
+    // Calcul de l'ombre
+    float shadow = ShadowCalculation(FragPosLightSpace, norm, lightDir);
+
+    // Phase 1 : éclairage directionnel avec ombre
+    vec3 result = CalcDirLight(dirLight, norm, viewDir, shadow);
+
+    // Phase 2 : éclairage des lumières ponctuelles
     for(int i = 0; i < NB_POINT_LIGHTS; i++)
         result += CalcPointLight(pointLights[i], norm, FragPos, viewDir);    
-    // phase 3: spot light
+
+    // Phase 3 : éclairage des spots
     for(int i = 0; i < NB_SPOT_LIGHTS; i++)
         result += CalcSpotLight(spotLights[i], norm, FragPos, viewDir);    
     
+    // Correction gamma
     vec4 fragColor = vec4(result, 1.0);
-    fragColor.rgb = pow(fragColor.rgb, vec3(1.0/gamma));
+    fragColor.rgb = pow(fragColor.rgb, vec3(1.0 / gamma));
 
-    if (visualizeDepth) FragColor = vec4(vec3(LinearizeDepth(gl_FragCoord.z) / far), 1.0);
-    else FragColor = fragColor;
+    // Visualisation de la profondeur si activée
+    if (visualizeDepth)
+        FragColor = vec4(vec3(LinearizeDepth(gl_FragCoord.z) / far), 1.0);
+    else
+        FragColor = fragColor;
 }
 
-// calculates the color when using a directional light.
-vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
+// Calcul de l'éclairage directionnel avec ombre
+vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir, float shadow)
 {
     vec3 lightDir = normalize(-light.direction);
     vec3 halfwayDir = normalize(lightDir + viewDir);
-    // diffuse shading
+    // Diffuse
     float diff = max(dot(normal, lightDir), 0.0);
-    // specular shading
-    vec3 reflectDir = reflect(-lightDir, normal);
+    // Spéculaire
     float spec = pow(max(dot(normal, halfwayDir), 0.0), material.shininess);
-    //float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-    // combine results
+    // Composantes de lumière
     vec3 ambient = light.ambient * vec3(texture(material.diffuse, TexCoords));
     vec3 diffuse = light.diffuse * diff * pow(texture(material.diffuse, TexCoords).rgb, vec3(gamma));
-    if (texture(material.diffuse, TexCoords).a < 0.5) discard;
     vec3 specular = light.specular * spec * vec3(texture(material.specular, TexCoords));
+    // Application de l'ombre sur les composantes diffuse et spéculaire
+    diffuse *= (1.0 - shadow);
+    specular *= (1.0 - shadow);
+    // Si le matériau est transparent, on le discarde
+    if (texture(material.diffuse, TexCoords).a < 0.5) discard;
     return (ambient + diffuse + specular);
 }
 

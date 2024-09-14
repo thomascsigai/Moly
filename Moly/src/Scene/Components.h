@@ -206,7 +206,7 @@ namespace Moly
 
 		LightType type = LightType::PointLight;
 
-		glm::vec3 direction = glm::vec3(-0.2f, -1.0f, -0.3f);
+		glm::vec3 direction = glm::vec3(0.0f, -1.0f, 0.0f);
 
 		float cutOff = 12.5f;
 		float outerCutOff = 15.0f;
@@ -259,7 +259,7 @@ namespace Moly
 			
 			ImGui::SliderFloat("Ambient", &ambientFactor, 0.0f, 1.0f, "%.2f");
 			ImGui::SliderFloat("Diffuse", &diffuseFactor, 0.0f, 1.0f, "%.2f");
-			ImGui::SliderFloat("Specular", &specularFactor, 0.0f, 1.0f, "%.2f");
+			ImGui::SliderFloat("Specular", &specularFactor, 0.0f, 10.0f, "%.2f");
 
 			ambient = color * ambientFactor;
 			diffuse = color * diffuseFactor;

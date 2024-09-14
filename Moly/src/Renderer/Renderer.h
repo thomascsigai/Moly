@@ -28,6 +28,7 @@ namespace Moly
 		Shader modelLoadingShader;
 		Shader lightShader;
 		Shader shadowMapShader;
+		Shader depthMapDebugShader;
 		std::vector<Shader> postProcessShaders;
 
 		unsigned int FBO, RBO, framebufferTexture;
@@ -35,13 +36,15 @@ namespace Moly
 		void InitFrameBuffer();
 		void DrawFrameBuffer();
 
-		void InitShadowMapFrameBuffer();
-
 		void ProcessRenderingSettings();
 
 		unsigned int shadowMapFBO;
-		unsigned int shadowMapWidth = 2048, shadowMapHeight = 2048;
+		unsigned int shadowMapWidth = 8192, shadowMapHeight = 8192;
 		unsigned int shadowMap;
+		glm::mat4 lightSpaceMatrix;
+		void InitShadowMapFrameBuffer();
+		void RenderSceneToShadowMap(const std::vector<std::shared_ptr<Entity>>& entities, const std::vector<std::shared_ptr<Entity>>& lights);
+		void DrawShadowMap();
 
 	};
 }
