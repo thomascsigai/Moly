@@ -145,7 +145,7 @@ namespace Moly
 
 		ImGui::SliderFloat("Gamma", &renderer->gamma, 0.0f, 5.0f, "%.1f");
 
-		ImGui::Combo("Post-Process", &renderer->selectedPostProcess, "None\0Kernel\0Blur\0TV Screen\0Pixelation\0Chromatic Aberration\0\0");
+		ImGui::Combo("Post-Process", &renderer->selectedPostProcess, "None\0Kernel\0\0");
 		
 		ImGui::Spacing();
 		ImGui::End();
