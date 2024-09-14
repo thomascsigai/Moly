@@ -9,6 +9,7 @@ unsigned int TextureFromFile(const char* path, const std::string& directory, boo
     glGenTextures(1, &textureID);
 
     int width, height, nrComponents;
+	stbi_set_flip_vertically_on_load(false);
     unsigned char* data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
     if (data)
     {
