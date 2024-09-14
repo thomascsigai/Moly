@@ -128,7 +128,7 @@ namespace Moly
                     uint32_t pointLightCount = 0;
                     uint32_t spotLightCount = 0;
 
-                    currentShader->setFloat("material.shininess", 400.0f);
+                    currentShader->setFloat("material.shininess", modelComponent->shininess);
                     currentShader->setFloat("gamma", gamma);
                     currentShader->setVec3("viewPos", camTransform->Position);
 
@@ -326,8 +326,11 @@ namespace Moly
             auto light = lights[i]->GetComponent<LightComponent>();
             auto lightTransform = lights[i]->GetComponent<TransformComponent>();
 
-			if (light->type == LightType::DirectionnalLight) 
-                lightPos = glm::vec3(lightTransform->Position.x, 300, lightTransform->Position.z);
+            if (light->type == LightType::DirectionnalLight)
+            {
+                lightPos = glm::vec3(lightTransform->Position.x, 250, lightTransform->Position.z);
+                light->direction = glm::normalize(-lightPos);
+            }
         }
 
         // Position et direction de la lumière
@@ -335,7 +338,7 @@ namespace Moly
 
         // Matrice de projection pour la lumière directionnelle
         float near_plane = 1.0f, far_plane = 1000.0f;
-        glm::mat4 orthoProjection = glm::ortho(-100.0f, 100.0f, -100.0f, 100.0f, near_plane, far_plane);
+        glm::mat4 orthoProjection = glm::ortho(-150.0f, 150.0f, -150.0f, 150.0f, near_plane, far_plane);
 
         lightSpaceMatrix = orthoProjection * lightView;
 

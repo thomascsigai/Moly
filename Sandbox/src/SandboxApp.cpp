@@ -39,7 +39,7 @@ namespace Moly
 			entity3->AddComponent(std::make_shared<ModelComponent>("resources/models/Sponza/sponza.obj"));
 
 			auto lightDir = activeScene->createEntity("Directionnal Light");
-			lightDir->AddComponent(std::make_shared<TransformComponent>(glm::vec3(0.0f, 50.0f, 0.0f)));
+			lightDir->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-10.0f, 50.0f, 10.0f)));
 			lightDir->AddComponent(std::make_shared<LightComponent>(LightType::DirectionnalLight));
 			activeScene->AddSceneLight(lightDir);
 

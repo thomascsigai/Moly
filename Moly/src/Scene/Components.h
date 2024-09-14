@@ -120,6 +120,8 @@ namespace Moly
 
 		Model model;
 
+		float shininess = 100.0f;
+
 		ModelComponent(std::string modelPath) 
 			: model(modelPath, false) {}
 
@@ -128,6 +130,7 @@ namespace Moly
 			ImGui::Spacing();
 			std::string label = "Model loaded : " + model.directory;
 			ImGui::Text(label.c_str());
+			ImGui::SliderFloat("Shininess", &shininess, 1.0f, 400.0f, "%.1f");
 			ImGui::Spacing();
 		}
 	};
@@ -233,13 +236,7 @@ namespace Moly
 			ImGui::Combo("Type", &light_type, "Point Light\0Directionnal Light\0Spot Light\0\0");
 			
 			if (light_type == 0) type = LightType::PointLight;
-			if (light_type == 1)
-			{
-				type = LightType::DirectionnalLight;
-				float dir[3] = { direction.x, direction.y, direction.z };
-				ImGui::DragFloat3("Direction", dir, 0.01f, -1000.0f, 1000.0f, "%.2f");
-				direction = glm::vec3(dir[0], dir[1], dir[2]);
-			}
+			if (light_type == 1) type = LightType::DirectionnalLight;
 			if (light_type == 2)
 			{
 				type = LightType::SpotLight;
