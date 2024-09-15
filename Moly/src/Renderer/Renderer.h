@@ -18,11 +18,17 @@ namespace Moly
 		void Render(const std::vector<std::shared_ptr<Entity>>& entities, const std::shared_ptr<Entity> cam,
 			const std::vector<std::shared_ptr<Entity>>& lights);
 
+		bool msaa = true;
 		float gamma = 2.2f;
 		bool visualizeDepth = false;
 		bool faceCulling = true;
 		bool showWireframe = false;
 		int selectedPostProcess = 0;
+		glm::vec3 clearColor = glm::vec3(0.52f, 0.80f, 0.92f);
+
+		float dofFocusDistance = 0.0f;
+		float dofFocusRange = 0.0f;
+		float dofMaxBlur = 0.0f;
 	
 	private:
 		Shader modelLoadingShader;

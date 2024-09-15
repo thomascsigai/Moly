@@ -137,6 +137,12 @@ namespace Moly
 
 		auto renderer = activeScene->GetRenderer();
 
+		ImGui::Checkbox("4x MSAA", &renderer->msaa);
+
+		float color[3] = { renderer->clearColor[0], renderer->clearColor[1], renderer->clearColor[2] };
+		ImGui::ColorEdit3("Clear Color", color);
+		renderer->clearColor = glm::vec3(color[0], color[1], color[2]);
+
 		ImGui::Checkbox("Face Culling", &renderer->faceCulling);
 
 		ImGui::Checkbox("Visualize Depth", &renderer->visualizeDepth);
@@ -145,7 +151,14 @@ namespace Moly
 
 		ImGui::SliderFloat("Gamma", &renderer->gamma, 0.0f, 5.0f, "%.1f");
 
-		ImGui::Combo("Post-Process", &renderer->selectedPostProcess, "None\0Kernel\0Blur\0TV Screen\0Pixelation\0Chromatic Aberration\0\0");
+		ImGui::Combo("Post-Process", &renderer->selectedPostProcess, "None\0Depth Of Field (WIP)\0Kernel\0Blur\0TV Screen\0Pixelation\0Chromatic Aberration\0\0");
+		
+		if (renderer->selectedPostProcess == 1)
+		{
+			ImGui::SliderFloat("Focus Distance", &renderer->dofFocusDistance, 0.0f, 100.0f, "%.1f");
+			ImGui::SliderFloat("Focus Range", &renderer->dofFocusRange, 0.0f, 100.0f, "%.1f");
+			ImGui::SliderFloat("Max Blur", &renderer->dofMaxBlur, 0.0f, 100.0f, "%.1f");
+		}
 		
 		ImGui::Spacing();
 		ImGui::End();

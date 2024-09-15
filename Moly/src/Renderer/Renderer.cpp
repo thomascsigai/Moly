@@ -27,6 +27,7 @@ namespace Moly
     {
         // Initialisation des shaders de post-traitement
         postProcessShaders.push_back(Shader("resources/shaders/post-process/default.vert", "resources/shaders/post-process/default.frag"));
+        postProcessShaders.push_back(Shader("resources/shaders/post-process/dof.vert", "resources/shaders/post-process/dof.frag"));
         postProcessShaders.push_back(Shader("resources/shaders/post-process/kernel.vert", "resources/shaders/post-process/kernel.frag"));
         postProcessShaders.push_back(Shader("resources/shaders/post-process/blur.vert", "resources/shaders/post-process/blur.frag"));
         postProcessShaders.push_back(Shader("resources/shaders/post-process/tv.vert", "resources/shaders/post-process/tv.frag"));
@@ -61,6 +62,10 @@ namespace Moly
         postProcessShaders[selectedPostProcess].setFloat("blurAmount", 10.0f);
         postProcessShaders[selectedPostProcess].setFloat("chromAbbOffsetAmount", .05f);
         postProcessShaders[selectedPostProcess].setVec2("resolution", 1920, 1080);
+        
+        postProcessShaders[selectedPostProcess].setFloat("focusDistance", dofFocusDistance);
+        postProcessShaders[selectedPostProcess].setFloat("focusRange", dofFocusRange);
+        postProcessShaders[selectedPostProcess].setFloat("maxBlur", dofMaxBlur);
 
         glBindVertexArray(rectVAO);
         glBindTexture(GL_TEXTURE_2D, framebufferTexture);
@@ -100,13 +105,13 @@ namespace Moly
     void Renderer::Render(const std::vector<std::shared_ptr<Entity>>& entities, const std::shared_ptr<Entity> cam,
         const std::vector<std::shared_ptr<Entity>>& lights)
     {
-        ProcessRenderingSettings();
-
         std::shared_ptr<TransformComponent> camTransform = cam->GetComponent<TransformComponent>();
         std::shared_ptr<CameraComponent> camComponent = cam->GetComponent<CameraComponent>();
         
         // Rendu de la scène depuis la perspective de la lumière pour générer la shadow map
         RenderSceneToShadowMap(entities, lights);
+        
+        ProcessRenderingSettings();
 
         for (const auto& entity : entities)
         {
@@ -217,7 +222,7 @@ namespace Moly
             DrawFrameBuffer();
 
         // Afficher la shadow map à l'écran
-        DrawShadowMap();
+        //DrawShadowMap();
     }
 
     void Renderer::ProcessRenderingSettings()
@@ -228,6 +233,9 @@ namespace Moly
         if (showWireframe) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
+        if (msaa) glEnable(GL_MULTISAMPLE);
+        else glDisable(GL_MULTISAMPLE);
+
         if (selectedPostProcess != 0)
         {
             glBindFramebuffer(GL_FRAMEBUFFER, FBO);
@@ -237,6 +245,7 @@ namespace Moly
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
+		glClearColor(clearColor.r, clearColor.g, clearColor.b, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
