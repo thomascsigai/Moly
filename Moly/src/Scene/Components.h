@@ -215,7 +215,7 @@ namespace Moly
 		float outerCutOff = 15.0f;
 
 		glm::vec3 ambient = glm::vec3(0.22f);
-		glm::vec3 diffuse = glm::vec3(0.3f);
+		glm::vec3 diffuse = glm::vec3(0.8f);
 		glm::vec3 specular = glm::vec3(0.75f);
 
 		void SetColor(glm::vec3 _color)
@@ -267,7 +267,7 @@ namespace Moly
 
 	private:
 		float ambientFactor = 0.22f;
-		float diffuseFactor = 0.3f;
+		float diffuseFactor = 0.8f;
 		float specularFactor = 0.75f;
 	};
 }
