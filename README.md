@@ -9,6 +9,7 @@ The MOLY Engine is a 3D game engine development project made with C++/OpenGL and
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Gallery](#gallery)
 - [Planned Features and Milestones](#planned-features-and-milestones)
 - [Dependencies](#dependencies)
 - [Contributors](#contributors)
@@ -51,6 +52,7 @@ You can test the engine by launching the `Sandbox` App :
    - In Solution explorer Right-click on `Sandbox` / Set as startup project.
 2. **Run the app:**
    - Run the `Sandbox` project (`F5`)
+
 If you ran an app in the `Debug` configuration, you will be able to use the debug UI to display entities data & components. You'll have to move and place the UI panels yourself (Docking is possible if you click on the panel window and move it to the main window sides).
 
 You can create your own app using the engine by following this steps :
@@ -67,6 +69,10 @@ You can create your own app using the engine by following this steps :
    - Set the app as startup project*.
    - Launch it.
 The  `project_setup.bat` generate a main cpp file for each project. In this file, you can change the window settings (Resolution, name, VSync etc.) in the `CreateApplication` method by modifying the `SetWindowData()` method. In the `OnStart()` method, you can create the entities that exist in your scene and add components to them. For the moment everything is via code. A Scene Editor will come in the future to handle and save every scene change.
+
+## Gallery
+![Sandbox 11_09_2024 18_49_31](https://github.com/user-attachments/assets/d02169c5-480d-41b7-a606-eda123b07be8)
+![Sandbox 18_09_2024 00_04_34](https://github.com/user-attachments/assets/b5fd4f89-35de-46bc-9020-5686bffe4ce9)
 
 ## Planned Features and Milestones
 - **Physically Based Rendering (PBR)**: Implement advanced PBR techniques using the Cook-Torrance BRDF model, including support for textures such as albedo, metallic, roughness, normal, and ambient occlusion. This will enhance realism with accurate lighting and surface interactions.
