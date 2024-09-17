@@ -26,8 +26,8 @@ The MOLY Engine is a 3D game engine development project made with C++/OpenGL and
 ## Prerequisites
 - CMake (version 3.10 or higher)
 
-## Installation (Tested on Windows 11 using Visual Studio 2022)
-For the moment, Moly has been tested only on Windows 11 using Visual Studio 2022. You need CMake 
+## Installation
+For the moment, Moly has been tested **only on Windows 11 using Visual Studio 2022**. You need CMake 
 1. Clone the repository (Must be recursively):
    ```bash
    git clone --recursive https://github.com/thomascsigai/Moly.git
@@ -68,6 +68,7 @@ You can create your own app using the engine by following this steps :
    - Build project `ALL_BUILD`.
    - Set the app as startup project*.
    - Launch it.
+
 The  `project_setup.bat` generate a main cpp file for each project. In this file, you can change the window settings (Resolution, name, VSync etc.) in the `CreateApplication` method by modifying the `SetWindowData()` method. In the `OnStart()` method, you can create the entities that exist in your scene and add components to them. For the moment everything is via code. A Scene Editor will come in the future to handle and save every scene change.
 
 ## Gallery
@@ -78,6 +79,7 @@ The  `project_setup.bat` generate a main cpp file for each project. In this file
 ## Planned Features and Milestones
 - **Physically Based Rendering (PBR)**: Implement advanced PBR techniques using the Cook-Torrance BRDF model, including support for textures such as albedo, metallic, roughness, normal, and ambient occlusion. This will enhance realism with accurate lighting and surface interactions.
 - **Performance Optimizations**: Focus on optimizing the engine’s performance with techniques such as Frustum Culling to render only visible objects, Vertex Buffer Objects (VBO) and Vertex Array Objects (VAO) for efficient data handling, and Level of Detail (LOD) to reduce the complexity of distant objects. These optimizations will ensure smooth and efficient rendering even in complex scenes.
+- **Scene Editor**: Develop an integrated scene editor that allows users to visually manipulate and organize entities, components, and lighting within the engine. The editor will feature drag-and-drop functionality, real-time component modification, and a hierarchy view to streamline the creation and editing of complex scenes, making the engine more accessible and user-friendly for developers.
 
 ## Project Progress
 Follow the project progress [here](https://malleable-painter-716.notion.site/5af77282be5345a98af1d837fa9b0cee?v=091c14a0577146fca077928508016910&pvs=4).
