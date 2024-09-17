@@ -71,8 +71,9 @@ You can create your own app using the engine by following this steps :
 The  `project_setup.bat` generate a main cpp file for each project. In this file, you can change the window settings (Resolution, name, VSync etc.) in the `CreateApplication` method by modifying the `SetWindowData()` method. In the `OnStart()` method, you can create the entities that exist in your scene and add components to them. For the moment everything is via code. A Scene Editor will come in the future to handle and save every scene change.
 
 ## Gallery
-![Sandbox 11_09_2024 18_49_31](https://github.com/user-attachments/assets/d02169c5-480d-41b7-a606-eda123b07be8)
-![Sandbox 18_09_2024 00_04_34](https://github.com/user-attachments/assets/b5fd4f89-35de-46bc-9020-5686bffe4ce9)
+![Sandbox 11_09_2024 18_49_31](https://github.com/user-attachments/assets/fca2e03e-2bb7-4f26-81f8-356ecec587ed) |  ![Sandbox 18_09_2024 00_04_34](https://github.com/user-attachments/assets/7ea54e15-4d89-467a-aae7-b2ab3534b0f3)
+:-------------------------:|:-------------------------:
+![](https://...Dark.png)  |  ![](https://...Ocean.png)
 
 ## Planned Features and Milestones
 - **Physically Based Rendering (PBR)**: Implement advanced PBR techniques using the Cook-Torrance BRDF model, including support for textures such as albedo, metallic, roughness, normal, and ambient occlusion. This will enhance realism with accurate lighting and surface interactions.
