@@ -3,15 +3,44 @@
 
 # Overview
 
-The MOLY Engine is a 3D game engine designed with a primary focus on creating high-quality rendering capabilities. Currently, it's in a phase of development that concentrate exclusively on building a robust and feature-rich renderer. This renderer will serve as the foundation for future expansions and functionalities of the engine.
+The MOLY Engine is a 3D game engine development project made with C++/OpenGL and designed to serve as a foundation for learning and exploring advanced graphics programming and engine development. For the moment the project focuses on building a robust and feature-rich rendering engine tailored for game development. Emphasizing advanced rendering, lighting, and post-processing techniques, the MOLY Engine provides an ideal learning environment to enhance skills in graphics programming and game engine design.
 
-# Features to be implemented
+## Table of Contents
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Planned Features and Milestones](#planned-features-and-milestones)
+- [Dependencies](#dependencies)
+- [Platform](#platform)
+- [Contributors](#contributors)
+- [License](#license)
 
-  - **Advanced Lighting Models**: Including Phong Lighting and Physically Based Rendering (PBR).
-  - **Model Loading and Management**: Support for loading and managing complex 3D models.
-  - **Normal and Shadow Mapping**: Techniques for realistic surface detail and dynamic shadows.
-  - **Post-processing Effects**: Bloom, Depth of Field, Motion Blur, HDR, and Tone Mapping.
-  - **Performance Optimizations**: Frustum Culling, VBOs, VAOs, and Level of Detail (LOD) for efficient rendering.
+## Features
+- **Lighting Models**: Includes Blinn-Phong Lighting.
+- **Model Loading and Management**: Supports loading and managing complex 3D models.
+- **Shadow Mapping**: Implements techniques for realistic surface detail and dynamic shadows.
+- **Post-Processing Effects**: Includes various effects to enhance visuals.
+- **Scene Hierarchy and Entity Management**: Features a basic Entity Component System (ECS) for efficient management of game objects.
+- **Inspector and Camera Controls**: Real-time component modification and flexible camera options, including orthographic and perspective views.
+
+## Installation (Tested on Windows using Visual Studio 2022)
+1. Clone the repository (Must be recursively):
+   ```bash
+   git clone --recursive https://github.com/thomascsigai/Moly.git
+   cd Moly
+   ```
+2. **Generate Visual Studio project files:**
+    ```bash
+    mkdir build
+    cd build
+    cmake ..
+    ```
+3. **Open the generated solution file:**
+    - Navigate to the `build` directory.
+    - Open `MolyEngine.sln` with Visual Studio.
+4. **Build the project:**
+    - Set the build configuration to `Release` or `Debug`.
+    - Build project `ALL_BUILD` (In Solution explorer Right-click on `ALL_BUILD` / Build).
 
 ## Project Progress
 
