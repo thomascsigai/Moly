@@ -73,7 +73,7 @@ The  `project_setup.bat` generate a main cpp file for each project. In this file
 ## Gallery
 ![Sandbox 11_09_2024 18_49_31](https://github.com/user-attachments/assets/fca2e03e-2bb7-4f26-81f8-356ecec587ed) |  ![Sandbox 18_09_2024 00_04_34](https://github.com/user-attachments/assets/7ea54e15-4d89-467a-aae7-b2ab3534b0f3)
 :-------------------------:|:-------------------------:
-![](https://...Dark.png)  |  ![](https://...Ocean.png)
+![Sandbox 18_09_2024 00_10_11](https://github.com/user-attachments/assets/e7db9f03-a887-401c-96e8-0f2d252bc274) | ![Sandbox 18_09_2024 00_09_35](https://github.com/user-attachments/assets/9ae95311-9c7b-4430-b94f-1be1d5cc1aa7)
 
 ## Planned Features and Milestones
 - **Physically Based Rendering (PBR)**: Implement advanced PBR techniques using the Cook-Torrance BRDF model, including support for textures such as albedo, metallic, roughness, normal, and ambient occlusion. This will enhance realism with accurate lighting and surface interactions.
