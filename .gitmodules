@@ -9,7 +9,8 @@
 	url = https://github.com/g-truc/glm
 [submodule "Moly/vendor/ImGUI"]
 	path = Moly/vendor/ImGUI
-	url = https://github.com/thomascsigai/imgui-cmake/tree/docking
+	url = https://github.com/thomascsigai/imgui-cmake/
+	branch = docking
 [submodule "Moly/vendor/assimp"]
 	path = Moly/vendor/assimp
 	url = https://github.com/assimp/assimp
