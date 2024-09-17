@@ -1,0 +1,23 @@
+project(__PROJECT_NAME__)
+
+add_executable(__PROJECT_NAME__ src/__PROJECT_NAME__App.cpp)
+
+target_include_directories(__PROJECT_NAME__ PRIVATE 
+    ${PROJECT_SOURCE_DIR}/../Moly/src
+    ${PROJECT_SOURCE_DIR}/../Moly/src/Core
+    ${PROJECT_SOURCE_DIR}/../Moly/src/Renderer
+    ${PROJECT_SOURCE_DIR}/../Moly/src/Scene
+)
+
+target_link_libraries(__PROJECT_NAME__ PRIVATE Moly)
+
+target_compile_definitions(__PROJECT_NAME__ PRIVATE ML_PLATFORM_WINDOWS)
+
+file(COPY ${PROJECT_SOURCE_DIR}/resources/ DESTINATION ${PROJECT_BINARY_DIR}/resources)
+file(COPY ${PROJECT_SOURCE_DIR}/../Moly/resources/ DESTINATION ${PROJECT_BINARY_DIR}/resources)
+
+add_custom_command(TARGET __PROJECT_NAME__ POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "$<TARGET_FILE:Moly>"
+    "$<TARGET_FILE_DIR:__PROJECT_NAME__>/"
+)

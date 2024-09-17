@@ -1,0 +1,51 @@
+#include <Moly.h>
+
+namespace Moly
+{
+	class __PROJECT_NAME__ : public Moly::Application
+	{
+	public:
+		__PROJECT_NAME__() : activeScene(nullptr)
+		{
+			
+		}
+
+		~__PROJECT_NAME__()
+		{
+
+		}
+
+		Scene* activeScene;
+
+		void OnStart() override
+		{
+			this->activeScene = Application::activeScene;
+
+			auto camera = activeScene->createEntity("Main Camera");
+			camera->AddComponent(std::make_shared<TransformComponent>());
+			camera->AddComponent(std::make_shared<CameraComponent>());
+			activeScene->SetPrimaryCam(camera);
+
+			auto lightDir = activeScene->createEntity("Directionnal Light");
+			lightDir->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-10.0f, 50.0f, 10.0f)));
+			lightDir->AddComponent(std::make_shared<LightComponent>(LightType::DirectionnalLight));
+			activeScene->AddSceneLight(lightDir);
+		}
+
+		void OnUpdate() override
+		{
+
+		}
+	
+	};
+
+	Application* CreateApplication()
+	{
+		ML_CLIENT_TRACE("Initializing __PROJECT_NAME__ App");
+		__PROJECT_NAME__* app = new __PROJECT_NAME__();
+		app->SetWindowData("__PROJECT_NAME__", 1600, 900, true);
+
+		return app;
+	}
+
+}
