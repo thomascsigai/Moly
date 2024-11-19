@@ -17,6 +17,8 @@ namespace Moly
 
 		Scene* activeScene;
 
+		// Method called when the application starts
+		// This is where you should create your entities and components
 		void OnStart() override
 		{
 			this->activeScene = Application::activeScene;
@@ -32,6 +34,8 @@ namespace Moly
 			activeScene->AddSceneLight(lightDir);
 		}
 
+		// Method called every frame
+		// This is where you should update your entities and components
 		void OnUpdate() override
 		{
 
@@ -43,7 +47,7 @@ namespace Moly
 	{
 		ML_CLIENT_TRACE("Initializing __PROJECT_NAME__ App");
 		__PROJECT_NAME__* app = new __PROJECT_NAME__();
-		app->SetWindowData("__PROJECT_NAME__", 1600, 900, true);
+		app->SetWindowData("__PROJECT_NAME__", 1920, 1080, true);
 
 		return app;
 	}

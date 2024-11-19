@@ -148,7 +148,7 @@ namespace Moly
 
 		void DrawComponentInInspector() override
 		{
-			static int current_perspective = 0;
+			static int current_perspective = (int)camera.projectionType;
 			
 			ImGui::Spacing();
 			ImGui::SetNextItemWidth(150.0f);

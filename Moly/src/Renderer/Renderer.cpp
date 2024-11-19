@@ -270,7 +270,7 @@ namespace Moly
         // Création de la texture du framebuffer
         glGenTextures(1, &framebufferTexture);
         glBindTexture(GL_TEXTURE_2D, framebufferTexture);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1600, 900, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 1920, 1080, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Évite les fuites de texture
@@ -280,7 +280,7 @@ namespace Moly
         // Création du Render Buffer Object
         glGenRenderbuffers(1, &RBO);
         glBindRenderbuffer(GL_RENDERBUFFER, RBO);
-        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1600, 900);
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 1920, 1080);
         glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
 
         // Vérification du framebuffer
@@ -338,6 +338,7 @@ namespace Moly
             if (light->type == LightType::DirectionnalLight)
             {
                 lightPos = glm::vec3(lightTransform->Position.x, 250, lightTransform->Position.z);
+                //lightPos = lightTransform->Position;
                 light->direction = glm::normalize(-lightPos);
             }
         }
@@ -375,7 +376,7 @@ namespace Moly
 
         // Réinitialiser le framebuffer par défaut
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        glViewport(0, 0, 1600, 900); // Remplacez par la taille de votre fenêtre
+        glViewport(0, 0, 1920, 1080); // Remplacez par la taille de votre fenêtre
 		if (faceCulling) glEnable(GL_CULL_FACE);
     }
 }

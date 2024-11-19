@@ -70,7 +70,7 @@ namespace Moly
         glfwSetFramebufferSizeCallback(windowGLFW, framebuffer_size_callback);
 		glfwSetKeyCallback(windowGLFW, InputProcessing::ProcessInput);
         glfwSetWindowUserPointer(windowGLFW, &windowData);
-        glfwSetWindowPos(windowGLFW, 100, 100);
+        glfwSetWindowPos(windowGLFW, 0, 0);
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);

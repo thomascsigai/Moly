@@ -22,17 +22,14 @@ namespace Moly
 			this->activeScene = Application::activeScene;
 
 			auto camera = activeScene->createEntity("Main Camera");
-			camera->AddComponent(std::make_shared<TransformComponent>());
+			camera->AddComponent(std::make_shared<TransformComponent>(glm::vec3(0.0f, 5.0f, 0.0f)));
+			camera->GetComponent<TransformComponent>()->Rotate(-45.0f, 45.0f, 0.0f);
 			camera->AddComponent(std::make_shared<CameraComponent>());
 			activeScene->SetPrimaryCam(camera);
 
 			auto entity1 = activeScene->createEntity("Cat");
 			entity1->AddComponent(std::make_shared<TransformComponent>(glm::vec3(2.0f, -1.0f, -15.0f)));
 			entity1->AddComponent(std::make_shared<ModelComponent>("resources/models/cat/cat.obj"));
-			
-			auto entity2 = activeScene->createEntity("Backpack");
-			entity2->AddComponent(std::make_shared<TransformComponent>(glm::vec3(-2.0f, 0.0f, -15.0f)));
-			entity2->AddComponent(std::make_shared<ModelComponent>("resources/models/backpack/backpack.obj"));
 			
 			auto entity3 = activeScene->createEntity("Sponza");
 			entity3->AddComponent(std::make_shared<TransformComponent>(glm::vec3(0.0f, -2.0f, -5.0f)));
@@ -132,7 +129,7 @@ namespace Moly
 	{
 		ML_CLIENT_TRACE("Initializing Sandbox App");
 		Sandbox* sandbox = new Sandbox();
-		sandbox->SetWindowData("Sandbox", 1600, 900, true);
+		sandbox->SetWindowData("Sandbox", 1920, 1080, true);
 
 		return sandbox;
 	}
