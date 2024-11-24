@@ -9,7 +9,10 @@ add_library(Moly SHARED
     vendor/stb_image/stb_image.cpp 
     src/Renderer/Model.cpp 
     src/Renderer/Renderer.cpp
- "src/Renderer/Camera.cpp" "src/Core/InputProcessing.h" "src/Core/InputProcessing.cpp")
+    src/Renderer/Camera.cpp
+    src/Events/Event.h
+    src/Events/KeyEvent.h
+)
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glfw)
 add_subdirectory(${PROJECT_SOURCE_DIR}/vendor/glad)
@@ -21,6 +24,7 @@ target_include_directories(Moly PUBLIC
     ${PROJECT_SOURCE_DIR}/src/Core
     ${PROJECT_SOURCE_DIR}/src/Renderer
     ${PROJECT_SOURCE_DIR}/src/Scene
+    ${PROJECT_SOURCE_DIR}/src/Events
 )
 
 # Include thirdparty libraries

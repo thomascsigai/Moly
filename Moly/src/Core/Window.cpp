@@ -1,6 +1,6 @@
 #include <Window.h>
 #include <TimeManipulation.h>
-#include <InputProcessing.h>
+#include <KeyEvent.h>
 
 namespace Moly
 {
@@ -10,6 +10,8 @@ namespace Moly
     float TimeManipulation::LastFrame = 0.0f;
     float TimeManipulation::GameTime = 0.0f;
 
+    EventManager eventManager;
+
 	static void GLFWErrorCallback(int error, const char* description)
 	{
 		ML_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
@@ -18,6 +20,12 @@ namespace Moly
     static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     {
         glViewport(0, 0, width, height);
+    }
+
+    void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+        bool pressed = (action == GLFW_PRESS || action == GLFW_REPEAT);
+        auto event = std::make_shared<KeyEvent>(key, pressed);
+        eventManager.Publish(event);
     }
 
     Window::Window(const WindowProps& props) : windowData(props)
@@ -68,7 +76,7 @@ namespace Moly
 
         glViewport(0, 0, windowData.Width, windowData.Height);
         glfwSetFramebufferSizeCallback(windowGLFW, framebuffer_size_callback);
-		glfwSetKeyCallback(windowGLFW, InputProcessing::ProcessInput);
+        glfwSetKeyCallback(windowGLFW, keyCallback);
         glfwSetWindowUserPointer(windowGLFW, &windowData);
         glfwSetWindowPos(windowGLFW, 0, 0);
 

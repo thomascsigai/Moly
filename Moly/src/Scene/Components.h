@@ -6,6 +6,7 @@
 
 #include <Camera.h>
 #include <Model.h>
+#include <KeyEvent.h>
 
 #include <iostream>
 
